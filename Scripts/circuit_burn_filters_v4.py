@@ -1,5 +1,5 @@
-"""
-circuit_burn_filters_v4.py  -  40 filters reverse-engineered from reference images
+﻿"""
+circuit_burn_filters_v4.py  -  31 filters reverse-engineered from reference images
 ====================================================================================
 Drop images into  'wallter/'  next to this script.
 Saved flat into  'circuitburn/'  as  <filtername>__<stem>.png
@@ -70,11 +70,11 @@ def hue_rot(arr, deg):
     return np.clip((flat@R.T).reshape(arr.shape),0,1)*255
 
 
-# ══════════════════════════════════════════════════════════════════════════════
-# 40 FILTERS
-# ══════════════════════════════════════════════════════════════════════════════
+# ------------------------------------------------------------------------------
+# 31 FILTERS
+# ------------------------------------------------------------------------------
 
-# ── 01. open_sign_neon ────────────────────────────────────────────────────────
+# -- 01. open_sign_neon --------------------------------------------------------
 # Ref img 1: OPEN neon sign — hot red/yellow/green shapes, deep black bg,
 # flat colour pools like a solarised poster print
 def open_sign_neon(src):
@@ -100,7 +100,7 @@ def open_sign_neon(src):
     result = flat_col*0.6 + arr2*0.4
     return sat(im(np.clip(result,0,255)), 3.0)
 
-# ── 02. infrared_foliage_rainbow ──────────────────────────────────────────────
+# -- 02. infrared_foliage_rainbow ----------------------------------------------
 # Ref img 2: Trees — vivid neon greens, hot pinks, rainbow sky arc
 def infrared_foliage_rainbow(src):
     arr = a(src); h,w = arr.shape[:2]
@@ -120,7 +120,7 @@ def infrared_foliage_rainbow(src):
     result = screen(base, arc*0.8)
     return sat(im(np.clip(result,0,255)), 2.8)
 
-# ── 03. rainbow_treeline ──────────────────────────────────────────────────────
+# -- 03. rainbow_treeline ------------------------------------------------------
 # Ref img 3: bare tree silhouette, wide rainbow banding behind it
 def rainbow_treeline(src):
     arr = a(src); h,w = arr.shape[:2]
@@ -135,13 +135,13 @@ def rainbow_treeline(src):
     result = rainbow*sil*0.7 + arr*0.3
     return sat(im(np.clip(result,0,255)), 2.5)
 
-# ── 04. pine_solarise ─────────────────────────────────────────────────────────
+# -- 04. pine_solarise ---------------------------------------------------------
 # Ref img 4: pine tree — strong teal/purple solarise, rainbow top strip
 def pine_solarise(src):
     arr = a(src); h,w = arr.shape[:2]
     # aggressive solarisation
     sol = np.where(arr<128, arr*2, (255-arr)*2)
-    sol[:,:,0] = np.clip(sol[:,:,0]*0.4,0,255)   # kill red → teal
+    sol[:,:,0] = np.clip(sol[:,:,0]*0.4,0,255)   # kill red ? teal
     sol[:,:,1] = np.clip(sol[:,:,1]*1.2,0,255)   # boost green
     sol[:,:,2] = np.clip(sol[:,:,2]*1.5+40,0,255) # boost blue/purple
     # rainbow strip at top 12%
@@ -154,7 +154,7 @@ def pine_solarise(src):
     sol[:strip_h] = strip
     return sat(im(np.clip(sol,0,255)), 2.4)
 
-# ── 05. scan_lines_ghost ──────────────────────────────────────────────────────
+# -- 05. scan_lines_ghost ------------------------------------------------------
 # Ref img 5: figure with heavy horizontal scan lines, green tint, ghosting
 def scan_lines_ghost(src):
     arr = a(src); h,w = arr.shape[:2]
@@ -172,7 +172,7 @@ def scan_lines_ghost(src):
     result = tinted*0.6 + ghost*0.4
     return im(np.clip(result,0,255))
 
-# ── 06. silhouette_static ─────────────────────────────────────────────────────
+# -- 06. silhouette_static -----------------------------------------------------
 # Ref img 6: figure against static TV — strong grain, near monochrome,
 # figure as crisp dark silhouette
 def silhouette_static(src):
@@ -195,7 +195,7 @@ def silhouette_static(src):
     r = np.clip(mixed*1.05,0,255); g = np.clip(mixed*1.0,0,255); b = np.clip(mixed*0.85,0,255)
     return im(np.stack([r,g,b],axis=2))
 
-# ── 07. cityscape_teal_scan ───────────────────────────────────────────────────
+# -- 07. cityscape_teal_scan ---------------------------------------------------
 # Ref img 7: city skyline — teal/blue palette, heavy scan lines, VHS feel
 def cityscape_teal_scan(src):
     arr = a(src); h,w = arr.shape[:2]
@@ -214,7 +214,7 @@ def cityscape_teal_scan(src):
     out[:,:,2] = np.roll(out[:,:,2],-3,axis=1)
     return im(np.clip(out,0,255))
 
-# ── 08. tungsten_body ─────────────────────────────────────────────────────────
+# -- 08. tungsten_body ---------------------------------------------------------
 # Ref img 8: backlit figure — amber/gold, pure black background, rim light
 def tungsten_body(src):
     arr = a(src)
@@ -228,13 +228,13 @@ def tungsten_body(src):
     r = np.clip(r*(1-dark_mask*0.95),0,255)
     g = np.clip(g*(1-dark_mask*0.95),0,255)
     b = np.clip(b*(1-dark_mask*0.95),0,255)
-    # rim light glow: edges of bright→dark transitions
+    # rim light glow: edges of bright?dark transitions
     e = edg(src)/255.0
     rim = np.clip((e-0.3)*3,0,1)
     r2 = np.clip(r+rim*180,0,255); g2 = np.clip(g+rim*80,0,255); b2 = np.clip(b+rim*20,0,255)
     return im(np.stack([r2,g2,b2],axis=2))
 
-# ── 09. lsd_mountains ─────────────────────────────────────────────────────────
+# -- 09. lsd_mountains ---------------------------------------------------------
 # Ref img 9: mountains — intense red/green/purple, flowing contour psychedelia
 def lsd_mountains(src):
     arr = a(src)
@@ -249,7 +249,7 @@ def lsd_mountains(src):
         np.clip(sol_g*1.1,0,255)],axis=2)
     return sat(im(result), 3.5)
 
-# ── 10. vaporwave_figure ──────────────────────────────────────────────────────
+# -- 10. vaporwave_figure ------------------------------------------------------
 # Ref img 10: person — deep pink/magenta vaporwave, neon outline, dark bg
 def vaporwave_figure(src):
     arr = a(src); h,w = arr.shape[:2]
@@ -269,7 +269,7 @@ def vaporwave_figure(src):
     base = base*(x**0.4)[:,:,np.newaxis]
     return sat(im(np.clip(base,0,255)), 2.6)
 
-# ── 13. double_exposure_face ──────────────────────────────────────────────────
+# -- 11. double_exposure_face --------------------------------------------------
 # Ref img 13: face double-exposed with cityscape — grey monochrome, blended
 def double_exposure_face(src):
     arr = a(src); h,w = arr.shape[:2]
@@ -286,13 +286,13 @@ def double_exposure_face(src):
     combined[:,:,2] = np.clip(combined[:,:,2]*1.1+10,0,255)
     return con(im(np.clip(combined,0,255)), 1.5)
 
-# ── 14. acid_flesh_pink ───────────────────────────────────────────────────────
+# -- 12. acid_flesh_pink -------------------------------------------------------
 # Ref img 14: face/figure — hot magenta pink, lime green, high contrast swirls
 def acid_flesh_pink(src):
     arr = a(src)
     # solarise strongly
     sol = np.where(arr<128, arr*2, (255-arr)*2)
-    # push red→hot-pink, green→lime
+    # push red?hot-pink, green?lime
     r = np.clip(sol[:,:,0]*1.6+50,  0,255)
     g = np.clip(sol[:,:,1]*1.8,     0,255)
     b = np.clip(sol[:,:,2]*0.3,     0,255)
@@ -302,7 +302,7 @@ def acid_flesh_pink(src):
     result = result*(1+e*0.8)
     return sat(im(np.clip(result,0,255)), 3.2)
 
-# ── 16. church_magenta ────────────────────────────────────────────────────────
+# -- 13. church_magenta --------------------------------------------------------
 # Ref img 16: church with cross — magenta/pink roof, neon green ground, silhouette
 def church_magenta(src):
     arr = a(src); h,w = arr.shape[:2]
@@ -321,7 +321,7 @@ def church_magenta(src):
     result = out*0.65 + hue_boost*0.35
     return sat(im(np.clip(result,0,255)), 3.0)
 
-# ── 17. gold_leaf_forest ──────────────────────────────────────────────────────
+# -- 14. gold_leaf_forest ------------------------------------------------------
 # Ref img 17: dark forest/landscape — gold/ochre on black, painterly, metallic
 def gold_leaf_forest(src):
     arr = a(src)
@@ -339,7 +339,7 @@ def gold_leaf_forest(src):
     dark = arr*0.1
     return sat(im(np.clip(dark+gold2,0,255)), 2.2)
 
-# ── 19. neon_petals ───────────────────────────────────────────────────────────
+# -- 15. neon_petals -----------------------------------------------------------
 # Ref img 19 (bottom row last): flowers/plants — electric cyan, vivid green,
 # high key with dark bg
 def neon_petals(src):
@@ -348,7 +348,7 @@ def neon_petals(src):
     green_dom = np.clip((arr[:,:,1]-np.maximum(arr[:,:,0],arr[:,:,2]))/255.0,0,1)
     # dark base
     dark = arr*0.15
-    # neon: high-green areas → electric cyan/green
+    # neon: high-green areas ? electric cyan/green
     neon_g = np.clip(arr[:,:,1]*2.5,0,255)
     neon_b = np.clip(arr[:,:,2]*2.0+50,0,255)
     neon_r = np.clip(arr[:,:,0]*0.2,0,255)
@@ -358,7 +358,7 @@ def neon_petals(src):
     result = dark + neon + bloom
     return sat(im(np.clip(result,0,255)), 3.0)
 
-# ── 20. red_static_wall ───────────────────────────────────────────────────────
+# -- 16. red_static_wall -------------------------------------------------------
 # Ref img 20: red/orange static — heavy noise over red-dominant image
 def red_static_wall(src):
     arr = a(src); h,w = arr.shape[:2]
@@ -376,7 +376,7 @@ def red_static_wall(src):
     base[:,:,0] = np.clip(base[:,:,0]+noise,0,255)
     return im(base)
 
-# ── 21. hue_shift_cascade ─────────────────────────────────────────────────────
+# -- 17. hue_shift_cascade -----------------------------------------------------
 # General across many ref images: progressive hue rotation per row/column
 def hue_shift_cascade(src):
     arr = a(src); h,w = arr.shape[:2]
@@ -386,7 +386,7 @@ def hue_shift_cascade(src):
         out[row] = hue_rot(arr[row:row+1], deg)[0]
     return sat(im(out), 2.4)
 
-# ── 22. scanline_portrait ─────────────────────────────────────────────────────
+# -- 18. scanline_portrait -----------------------------------------------------
 # Ref imgs with figures: coarse scanline halftone, slight warm tint
 def scanline_portrait(src):
     arr = a(src); h,w = arr.shape[:2]
@@ -403,7 +403,7 @@ def scanline_portrait(src):
     result = warm*mask[:,:,np.newaxis]
     return im(np.clip(result,0,255))
 
-# ── 23. neon_edge_trace_v2 ────────────────────────────────────────────────────
+# -- 19. neon_edge_trace_v2 ----------------------------------------------------
 # Strong contour extraction with glowing rainbow outline on black
 def neon_edge_trace_v2(src):
     arr = a(src); h,w = arr.shape[:2]
@@ -422,7 +422,7 @@ def neon_edge_trace_v2(src):
     dark  = arr*0.05
     return sat(im(np.clip(dark+trace+bloom,0,255)), 2.8)
 
-# ── 24. glitch_rgb_bleed ──────────────────────────────────────────────────────
+# -- 20. glitch_rgb_bleed ------------------------------------------------------
 # Heavy RGB channel separation with horizontal tearing and colour bleed
 def glitch_rgb_bleed(src):
     arr = a(src); h,w = arr.shape[:2]
@@ -439,7 +439,7 @@ def glitch_rgb_bleed(src):
     out[:,:,2] = np.roll(out[:,:,2], -20, axis=1)
     return sat(im(np.clip(out,0,255)), 2.0)
 
-# ── 25. contour_map_vivid ─────────────────────────────────────────────────────
+# -- 21. contour_map_vivid -----------------------------------------------------
 # Topographic contour lines in vivid colour — closed loops following luminance
 def contour_map_vivid(src):
     arr = a(src)
@@ -460,8 +460,8 @@ def contour_map_vivid(src):
     line_col = np.stack([pal_r[q],pal_g[q],pal_b[q]],axis=2)*contour[:,:,np.newaxis]
     return sat(im(np.clip(flat+line_col*3,0,255)), 3.0)
 
-# ── 26. burnt_chrome ──────────────────────────────────────────────────────────
-# Metallic chrome surface that's been heat-discoloured: blue→purple→gold→clear
+# -- 22. burnt_chrome ----------------------------------------------------------
+# Metallic chrome surface that's been heat-discoloured: blue?purple?gold?clear
 def burnt_chrome(src):
     arr = a(src)
     x = lum(arr)/255.0
@@ -488,7 +488,7 @@ def burnt_chrome(src):
     out[:,:,2] = np.clip(out[:,:,2]+e*90, 0,255)
     return im(out)
 
-# ── 27. warhol_quad ───────────────────────────────────────────────────────────
+# -- 23. warhol_quad -----------------------------------------------------------
 # Pop art Warhol-style: flat colour fills, 4 bold hue shifts across image
 def warhol_quad(src):
     arr = a(src); h,w = arr.shape[:2]
@@ -511,7 +511,7 @@ def warhol_quad(src):
         out[ry:ey,rx:ex] = pal[region_q]
     return sat(im(np.clip(out,0,255)), 2.8)
 
-# ── 28. thermal_body_scan ─────────────────────────────────────────────────────
+# -- 24. thermal_body_scan -----------------------------------------------------
 # Medical thermal: vivid red/yellow hot zones, blue cold, like FLIR body scan
 def thermal_body_scan(src):
     arr = a(src)
@@ -536,7 +536,7 @@ def thermal_body_scan(src):
         for ch in range(3): out[mask,ch] = c0[ch]*(1-t)+c1[ch]*t
     return im(out)
 
-# ── 31. glitch_column_shift ───────────────────────────────────────────────────
+# -- 25. glitch_column_shift ---------------------------------------------------
 # Vertical column-based glitch: blocks of columns randomly shifted up/down
 def glitch_column_shift(src):
     arr = a(src); h,w = arr.shape[:2]
@@ -552,11 +552,11 @@ def glitch_column_shift(src):
     out[:,:,2] = np.roll(out[:,:,2],-12,axis=1)
     return sat(im(np.clip(out,0,255)), 2.0)
 
-# ── 32. cross_process_e6 ──────────────────────────────────────────────────────
+# -- 26. cross_process_e6 ------------------------------------------------------
 # E6 slide film cross-processed in C41: cyan shadows, orange highlights, crazy
 def cross_process_e6(src):
     arr = a(src); x = lum(arr)/255.0
-    # cross-process: shadows→cyan, mids→weird, highlights→orange/yellow
+    # cross-process: shadows?cyan, mids?weird, highlights?orange/yellow
     r = np.clip(np.where(x<0.5, x*160, x**0.4*255*1.1),     0,255)
     g = np.clip(np.where(x<0.5, x*80,  x**0.6*200+30),      0,255)
     b = np.clip(np.where(x<0.5, (1-x)*200+80, x**3*80+10),  0,255)
@@ -566,25 +566,7 @@ def cross_process_e6(src):
     b2 = np.clip(b - arr[:,:,2]*0.2, 0,255)
     return sat(im(np.stack([r2,g2,b2],axis=2)), 2.5)
 
-# ── 33. barbed_wire_burn ──────────────────────────────────────────────────────
-# Ref img barbed wire: brown/rust tones, high detail preservation, gritty
-def barbed_wire_burn(src):
-    arr = a(src)
-    # rust/brown grade
-    x = lum(arr)/255.0
-    r = np.clip(x**0.5*220+20,   0,255)
-    g = np.clip(x**0.8*140+10,   0,255)
-    b = np.clip(x**2.0*40,        0,255)
-    base = np.stack([r,g,b],axis=2)
-    # burn: multiply with original's red dominance
-    red_dom = np.clip(arr[:,:,0]/255.0*1.5,0,1)[:,:,np.newaxis]
-    burned = base*red_dom
-    # add texture: strong unsharp
-    detail = np.asarray(src.convert("RGB").filter(ImageFilter.UnsharpMask(2,300,5)),dtype=np.float32)
-    detail_boost = (detail/255.0)[:,:,:1]*30
-    return im(np.clip(burned*0.7+base*0.3+detail_boost,0,255))
-
-# ── 34. pixel_sort_column ─────────────────────────────────────────────────────
+# -- 27. pixel_sort_column -----------------------------------------------------
 # Pixel-sort: sort pixels vertically by brightness in bright regions
 def pixel_sort_column(src):
     arr = a(src); h,w = arr.shape[:2]
@@ -608,23 +590,23 @@ def pixel_sort_column(src):
                     out[run_start:run_end,col,:] = segment[order]
     return sat(im(np.clip(out,0,255)), 1.8)
 
-# ── 35. neon_jungle ───────────────────────────────────────────────────────────
+# -- 28. neon_jungle -----------------------------------------------------------
 # Dark environment, vivid neon greens + electric blues, lush overgrown feel
 def neon_jungle(src):
     arr = a(src)
     dark = arr*0.2
-    # boost: green→electric, blue→neon
+    # boost: green?electric, blue?neon
     neon = arr.copy()
     neon[:,:,0] = np.clip(arr[:,:,0]*0.3,      0,255)
     neon[:,:,1] = np.clip(arr[:,:,1]*2.5+40,   0,255)
     neon[:,:,2] = np.clip(arr[:,:,2]*2.0+50,   0,255)
-    # where green dominates → make it pop harder
+    # where green dominates ? make it pop harder
     green_dom = np.clip((arr[:,:,1]-arr[:,:,0]-arr[:,:,2]/2)/255.0,0,1)
     result = dark + neon*green_dom[:,:,np.newaxis]*1.5 + dark*(1-green_dom[:,:,np.newaxis])
     bloom = gblur(neon,8)*0.3
     return sat(im(np.clip(result+bloom,0,255)), 3.0)
 
-# ── 36. posterise_cmyk ────────────────────────────────────────────────────────
+# -- 29. posterise_cmyk --------------------------------------------------------
 # Hard CMYK-like poster with visible halftone rosette feel and flat fills
 def posterise_cmyk(src):
     arr = a(src); h,w = arr.shape[:2]
@@ -645,7 +627,7 @@ def posterise_cmyk(src):
     b_out = np.clip((1-Y3)*(1-K3)*255,0,255)
     return sat(im(np.stack([r_out,g_out,b_out],axis=2)), 2.5)
 
-# ── 37. laser_etch_red ────────────────────────────────────────────────────────
+# -- 30. laser_etch_red --------------------------------------------------------
 # Laser engraving aesthetic: red/orange burn lines on dark material
 def laser_etch_red(src):
     arr = a(src)
@@ -661,27 +643,7 @@ def laser_etch_red(src):
     bloom = gblur(etch,5)*0.5
     return im(np.clip(substrate+etch+bloom,0,255))
 
-# ── 39. monochrome_infrared ───────────────────────────────────────────────────
-# Classic Kodak HIE monochrome infrared: blown whites, dark sky, grain, halo
-def monochrome_infrared(src):
-    arr = a(src); h,w = arr.shape[:2]
-    rng = np.random.default_rng(39)
-    # infrared sim: foliage (high green, low blue) → very bright
-    ir_channel = arr[:,:,1]*1.6 - arr[:,:,2]*0.8 + arr[:,:,0]*0.2
-    ir_channel = np.clip(ir_channel,0,255)/255.0
-    # halation: bright regions get a glow halo
-    x = np.power(ir_channel,0.6)
-    blown = im(np.stack([x*255]*3,axis=2))
-    halo  = gblur(np.asarray(blown,dtype=np.float32),14)*0.4
-    x_b   = x*255
-    result= np.stack([x_b]*3,axis=2)+halo
-    # grain
-    grain = rng.standard_normal((h,w)).astype(np.float32)*10*(1-x)
-    for ch in range(3):
-        result[:,:,ch] = np.clip(result[:,:,ch]+grain,0,255)
-    return im(np.clip(result,0,255))
-
-# ── 40. chromatic_displacement ────────────────────────────────────────────────
+# -- 31. chromatic_displacement ------------------------------------------------
 # Each channel displaced by image's own gradient — self-warping colour smear
 def chromatic_displacement(src):
     arr = a(src); h,w = arr.shape[:2]
@@ -700,7 +662,7 @@ def chromatic_displacement(src):
     return sat(im(np.clip(out,0,255)), 2.4)
 
 
-# ══════════════════════════════════════════════════════════════════════════════
+# ------------------------------------------------------------------------------
 FILTERS = {
     "01_open_sign_neon":            open_sign_neon,
     "02_infrared_foliage_rainbow":  infrared_foliage_rainbow,
@@ -712,29 +674,27 @@ FILTERS = {
     "08_tungsten_body":             tungsten_body,
     "09_lsd_mountains":             lsd_mountains,
     "10_vaporwave_figure":          vaporwave_figure,
-    "13_double_exposure_face":      double_exposure_face,
-    "14_acid_flesh_pink":           acid_flesh_pink,
-    "16_church_magenta":            church_magenta,
-    "17_gold_leaf_forest":          gold_leaf_forest,
-    "19_neon_petals":               neon_petals,
-    "20_red_static_wall":           red_static_wall,
-    "21_hue_shift_cascade":         hue_shift_cascade,
-    "22_scanline_portrait":         scanline_portrait,
-    "23_neon_edge_trace_v2":        neon_edge_trace_v2,
-    "24_glitch_rgb_bleed":          glitch_rgb_bleed,
-    "25_contour_map_vivid":         contour_map_vivid,
-    "26_burnt_chrome":              burnt_chrome,
-    "27_warhol_quad":               warhol_quad,
-    "28_thermal_body_scan":         thermal_body_scan,
-    "31_glitch_column_shift":       glitch_column_shift,
-    "32_cross_process_e6":          cross_process_e6,
-    "33_barbed_wire_burn":          barbed_wire_burn,
-    "34_pixel_sort_column":         pixel_sort_column,
-    "35_neon_jungle":               neon_jungle,
-    "36_posterise_cmyk":            posterise_cmyk,
-    "37_laser_etch_red":            laser_etch_red,
-    "39_monochrome_infrared":       monochrome_infrared,
-    "40_chromatic_displacement":    chromatic_displacement,
+    "11_double_exposure_face":      double_exposure_face,
+    "12_acid_flesh_pink":           acid_flesh_pink,
+    "13_church_magenta":            church_magenta,
+    "14_gold_leaf_forest":          gold_leaf_forest,
+    "15_neon_petals":               neon_petals,
+    "16_red_static_wall":           red_static_wall,
+    "17_hue_shift_cascade":         hue_shift_cascade,
+    "18_scanline_portrait":         scanline_portrait,
+    "19_neon_edge_trace_v2":        neon_edge_trace_v2,
+    "20_glitch_rgb_bleed":          glitch_rgb_bleed,
+    "21_contour_map_vivid":         contour_map_vivid,
+    "22_burnt_chrome":              burnt_chrome,
+    "23_warhol_quad":               warhol_quad,
+    "24_thermal_body_scan":         thermal_body_scan,
+    "25_glitch_column_shift":       glitch_column_shift,
+    "26_cross_process_e6":          cross_process_e6,
+    "27_pixel_sort_column":         pixel_sort_column,
+    "28_neon_jungle":               neon_jungle,
+    "29_posterise_cmyk":            posterise_cmyk,
+    "30_laser_etch_red":            laser_etch_red,
+    "31_chromatic_displacement":    chromatic_displacement,
 }
 
 def main():
@@ -760,3 +720,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

@@ -135,12 +135,10 @@ def false_color_terrain(img):
 
 # ── 10. electric_sky ──────────────────────────────────────────────────────────
 def electric_sky(img):
-    """Top 45 % sky region hue-cycled to vivid electric tones."""
-    arr = to_arr(img); h, w = arr.shape[:2]; sky_end = int(h*0.45)
-    sky = arr[:sky_end].copy()
-    sky_out = np.stack([sky[:,:,2], 255-sky[:,:,1], sky[:,:,0]], axis=2)
-    out = arr.copy(); out[:sky_end] = np.clip(sky_out*1.4, 0, 255)
-    return saturate(to_img(out), 2.2)
+    """Apply the electric sky hue cycle to the full image."""
+    arr = to_arr(img)
+    electric = np.stack([arr[:,:,2], 255-arr[:,:,1], arr[:,:,0]], axis=2)
+    return saturate(to_img(np.clip(electric * 1.4, 0, 255)), 2.2)
 
 # ── 11. circuit_trace ─────────────────────────────────────────────────────────
 def circuit_trace(img):

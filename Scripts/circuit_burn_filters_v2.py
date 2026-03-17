@@ -1,5 +1,5 @@
 """
-circuit_burn_filters_v2.py  -  40 NEW experimental colour filters
+circuit_burn_filters_v2.py  -  30 experimental colour filters
 ==================================================================
 Drop images into  'wallter/'  next to this script.
 Every filtered image is saved flat into  'circuitburn/'
@@ -269,7 +269,7 @@ def nerve_signal(src):
     myelin = np.asarray(myelin_i.filter(ImageFilter.GaussianBlur(8)),dtype=np.float32)
     return i(np.clip(dark+dendrite+myelin,0,255))
 
-# ---- 21 solar_wind ------------------------------------------------------------
+# ---- 20 solar_wind ------------------------------------------------------------
 def solar_wind(src):
     arr = a(src); h,w = arr.shape[:2]
     xv,yv = mesh(h,w)
@@ -281,7 +281,7 @@ def solar_wind(src):
     b = np.clip(x*80 +s2*140+20, 0,255)
     return sat(i(np.stack([r,g,b],axis=2)),2.1)
 
-# ---- 22 crt_phosphor ----------------------------------------------------------
+# ---- 21 crt_phosphor ----------------------------------------------------------
 def crt_phosphor(src):
     arr = a(src); h,w = arr.shape[:2]
     x   = lum(arr)/255.0
@@ -292,7 +292,7 @@ def crt_phosphor(src):
     g_b = np.asarray(g_i.filter(ImageFilter.GaussianBlur(2)),dtype=np.float32)*1.3
     return i(np.clip(g_b,0,255))
 
-# ---- 23 tritium_glow ----------------------------------------------------------
+# ---- 22 tritium_glow ----------------------------------------------------------
 def tritium_glow(src):
     x = lum(a(src))/255.0
     glow = np.power(np.clip(x,0,1),0.4)
@@ -303,17 +303,7 @@ def tritium_glow(src):
     bloom = np.asarray(i(base).filter(ImageFilter.GaussianBlur(12)),dtype=np.float32)*0.5
     return i(np.clip(base+bloom,0,255))
 
-# ---- 25 barium_chloride -------------------------------------------------------
-def barium_chloride(src):
-    x = lum(a(src))/255.0
-    r = np.clip(x**1.5*100,      0,255)
-    g = np.clip(x**0.35*255*1.2, 0,255)
-    b = np.clip(x**2.5*60,       0,255)
-    spark = np.clip((x-0.92)*13,0,1)[:,:,np.newaxis]*255
-    out = np.stack([r,g,b],axis=2)*(1-spark/255)+spark
-    return i(np.clip(out,0,255))
-
-# ---- 29 rust_bloom ------------------------------------------------------------
+# ---- 23 rust_bloom ------------------------------------------------------------
 def rust_bloom(src):
     arr = a(src); x = lum(arr)/255.0
     steel = np.stack([x*180,x*175,x*170],axis=2)
@@ -322,7 +312,7 @@ def rust_bloom(src):
     alpha = (rs*1.5).clip(0,1)[:,:,np.newaxis]
     return con(i(steel*(1-alpha)+rust*alpha),1.5)
 
-# ---- 30 sodium_vapor ----------------------------------------------------------
+# ---- 24 sodium_vapor ----------------------------------------------------------
 def sodium_vapor(src):
     x = lum(a(src))/255.0
     r = np.clip(x**0.6*255*1.05+15,0,255)
@@ -330,7 +320,7 @@ def sodium_vapor(src):
     b = np.clip(x**2.5*255*0.05,    0,255)
     return i(np.stack([r,g,b],axis=2))
 
-# ---- 31 corrupted_memory -------------------------------------------------------
+# ---- 25 corrupted_memory -------------------------------------------------------
 def corrupted_memory(src):
     arr = a(src); h,w = arr.shape[:2]
     rng = np.random.default_rng(31); out = arr.copy(); bs=16
@@ -346,14 +336,14 @@ def corrupted_memory(src):
                 out[by:by+bs,bx:bx+bs]=arr[sy:sy+bs,sx:sx+bs]
     return sat(i(out),1.8)
 
-# ---- 33 teal_orange_split -----------------------------------------------------
+# ---- 26 teal_orange_split -----------------------------------------------------
 def teal_orange_split(src):
     arr = a(src)
     t = (lum(arr)/255.0)[:,:,np.newaxis]
     out = np.array([0,180,180])*(1-t)+np.array([255,130,0])*t
     return sat(i(np.clip(arr*0.25+out*0.75,0,255)),2.5)
 
-# ---- 34 hypnodisk -------------------------------------------------------------
+# ---- 27 hypnodisk -------------------------------------------------------------
 def hypnodisk(src):
     arr = a(src); h,w = arr.shape[:2]
     cy,cx = h/2,w/2
@@ -367,7 +357,7 @@ def hypnodisk(src):
     b = (np.sin(hue*2*math.pi+4.19)*0.5+0.5)*x*255*1.5
     return sat(i(np.clip(np.stack([r,g,b],axis=2),0,255)),2.4)
 
-# ---- 36 dna_sequencer ---------------------------------------------------------
+# ---- 28 dna_sequencer ---------------------------------------------------------
 def dna_sequencer(src):
     arr = a(src); h,w = arr.shape[:2]
     bw   = max(1,w//4)
@@ -381,7 +371,7 @@ def dna_sequencer(src):
     bloom = np.asarray(i(out).filter(ImageFilter.GaussianBlur(6)),dtype=np.float32)*0.4
     return i(np.clip(out+bloom,0,255))
 
-# ---- 38 acid_rain -------------------------------------------------------------
+# ---- 29 acid_rain -------------------------------------------------------------
 def acid_rain(src):
     arr = a(src); h,w = arr.shape[:2]
     rng = np.random.default_rng(88)
@@ -395,7 +385,7 @@ def acid_rain(src):
     b = np.clip(arr[:,:,2]*0.2+streaks*30, 0,255)
     return sat(i(np.stack([r,g,b],axis=2)),2.2)
 
-# ---- 40 carnival_mirror -------------------------------------------------------
+# ---- 30 carnival_mirror -------------------------------------------------------
 def carnival_mirror(src):
     arr = a(src); h,w = arr.shape[:2]
     cy,cx = h/2.0,w/2.0
@@ -427,18 +417,17 @@ FILTERS = {
     "17_quantum_foam":          quantum_foam,
     "18_cassette_dub":          cassette_dub,
     "19_nerve_signal":          nerve_signal,
-    "21_solar_wind":            solar_wind,
-    "22_crt_phosphor":          crt_phosphor,
-    "23_tritium_glow":          tritium_glow,
-    "25_barium_chloride":       barium_chloride,
-    "29_rust_bloom":            rust_bloom,
-    "30_sodium_vapor":          sodium_vapor,
-    "31_corrupted_memory":      corrupted_memory,
-    "33_teal_orange_split":     teal_orange_split,
-    "34_hypnodisk":             hypnodisk,
-    "36_dna_sequencer":         dna_sequencer,
-    "38_acid_rain":             acid_rain,
-    "40_carnival_mirror":       carnival_mirror,
+    "20_solar_wind":            solar_wind,
+    "21_crt_phosphor":          crt_phosphor,
+    "22_tritium_glow":          tritium_glow,
+    "23_rust_bloom":            rust_bloom,
+    "24_sodium_vapor":          sodium_vapor,
+    "25_corrupted_memory":      corrupted_memory,
+    "26_teal_orange_split":     teal_orange_split,
+    "27_hypnodisk":             hypnodisk,
+    "28_dna_sequencer":         dna_sequencer,
+    "29_acid_rain":             acid_rain,
+    "30_carnival_mirror":       carnival_mirror,
 }
 
 def main():

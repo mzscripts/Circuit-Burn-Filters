@@ -1,5 +1,5 @@
 """
-circuit_burn_filters_v3.py  -  40 MORE experimental colour filters
+circuit_burn_filters_v3.py  -  30 experimental colour filters
 ===================================================================
 Drop images into  'wallter/'  next to this script.
 Every filtered image is saved flat into  'circuitburn/'
@@ -74,7 +74,7 @@ def hue_rotate_arr(arr, deg):
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-#  40 FILTERS
+#  30 FILTERS
 # ══════════════════════════════════════════════════════════════════════════════
 
 # ── 01. mandelbrot_dye ────────────────────────────────────────────────────────
@@ -323,7 +323,7 @@ def venetian_fresco(src):
     base[:,:,1] = np.clip(base[:,:,1] + e*100, 0, 255)
     return con(im(base), 1.4)
 
-# ── 06. sepia_overdrive ───────────────────────────────────────────────────────
+# ── 05. sepia_overdrive ───────────────────────────────────────────────────────
 def sepia_overdrive(src):
     """Classic sepia pushed through a colour-dodge explosion into amber fire."""
     arr = a(src); x = lum(arr)/255.0
@@ -336,7 +336,7 @@ def sepia_overdrive(src):
     dodged = dodge(sepia, arr*np.array([1,0.5,0.2]))
     return con(sat(im(np.clip(dodged, 0, 255)), 2.0), 1.5)
 
-# ── 07. aurora_column ─────────────────────────────────────────────────────────
+# ── 06. aurora_column ─────────────────────────────────────────────────────────
 def aurora_column(src):
     """Auroral column discharge: vertical curtains of teal+violet plasma."""
     arr = a(src); h, w = arr.shape[:2]
@@ -355,7 +355,7 @@ def aurora_column(src):
     out  = dark + np.stack([curtain_r, curtain_g, curtain_b], axis=2)
     return sat(im(np.clip(out, 0, 255)), 2.8)
 
-# ── 09. polaroid_melt ─────────────────────────────────────────────────────────
+# ── 07. polaroid_melt ─────────────────────────────────────────────────────────
 def polaroid_melt(src):
     """Polaroid film left in the sun: bleached pinks, cyan halos, bubbling."""
     arr = a(src); h, w = arr.shape[:2]
@@ -382,7 +382,7 @@ def polaroid_melt(src):
     warped = bleached[ys_w, xs_w]
     return sat(im(np.clip(warped, 0, 255)), 1.6)
 
-# ── 10. deep_ultraviolet ──────────────────────────────────────────────────────
+# ── 08. deep_ultraviolet ──────────────────────────────────────────────────────
 def deep_ultraviolet(src):
     """Germicidal UV lab: everything becomes ghostly purple-white on black."""
     arr = a(src); x = lum(arr)/255.0
@@ -399,7 +399,7 @@ def deep_ultraviolet(src):
     b = np.clip(b * col_flicker, 0, 255)
     return im(np.stack([r,g,b], axis=2))
 
-# ── 11. chromakey_ghost ───────────────────────────────────────────────────────
+# ── 09. chromakey_ghost ───────────────────────────────────────────────────────
 def chromakey_ghost(src):
     """Green-screen ghost: green spill turned invisible, edges phantomised."""
     arr = a(src)
@@ -413,7 +413,7 @@ def chromakey_ghost(src):
     ghost = gblur(out, 6)*e*1.5
     return sat(im(np.clip(out*0.7 + ghost, 0, 255)), 2.2)
 
-# ── 12. thermal_gradient_v2 ───────────────────────────────────────────────────
+# ── 10. thermal_gradient_v2 ───────────────────────────────────────────────────
 def thermal_gradient_v2(src):
     """FLIR-style but remapped to an alien violet-white-teal palette."""
     arr = a(src); x = lum(arr)/255.0
@@ -435,7 +435,7 @@ def thermal_gradient_v2(src):
             out[mask,ch] = c0[ch]*(1-t)+c1[ch]*t
     return im(out)
 
-# ── 13. riso_print ────────────────────────────────────────────────────────────
+# ── 11. riso_print ────────────────────────────────────────────────────────────
 def riso_print(src):
     """Risograph 2-colour misregistered print: fluorescent pink + teal."""
     arr = a(src)
@@ -456,7 +456,7 @@ def riso_print(src):
     b = np.clip(ch2*180 + ch1*30,                     0, 255)
     return im(np.stack([r,g,b],axis=2))
 
-# ── 14. lenticular_shift ──────────────────────────────────────────────────────
+# ── 12. lenticular_shift ──────────────────────────────────────────────────────
 def lenticular_shift(src):
     """Lenticular lens card: different hue every 4 pixels like angle-change."""
     arr = a(src); h, w = arr.shape[:2]
@@ -469,7 +469,7 @@ def lenticular_shift(src):
         out[:, col:x1] = hue_rotate_arr(arr[:, col:x1], angle)
     return sat(im(out), 2.5)
 
-# ── 15. neutrino_scan ─────────────────────────────────────────────────────────
+# ── 13. neutrino_scan ─────────────────────────────────────────────────────────
 def neutrino_scan(src):
     """Cherenkov radiation detector: dark water, sparse blue-white tracks."""
     arr = a(src); h, w = arr.shape[:2]
@@ -486,7 +486,7 @@ def neutrino_scan(src):
     bloom   = gblur(tracks, 5)*0.6
     return im(np.clip(water + tracks + bloom, 0, 255))
 
-# ── 17. neon_sashimi ──────────────────────────────────────────────────────────
+# ── 14. neon_sashimi ──────────────────────────────────────────────────────────
 def neon_sashimi(src):
     """Japanese izakaya: salmon-pink, electric indigo, wasabi green slices."""
     arr = a(src)
@@ -514,7 +514,7 @@ def neon_sashimi(src):
         out = out*(1-mask) + seam_blur*mask
     return sat(im(np.clip(out,0,255)), 2.4)
 
-# ── 18. electron_microscope ───────────────────────────────────────────────────
+# ── 15. electron_microscope ───────────────────────────────────────────────────
 def electron_microscope(src):
     """SEM false-colour: metallic gold-green on pitch black substrate."""
     arr = a(src)
@@ -531,7 +531,7 @@ def electron_microscope(src):
     out = np.stack([r,g,b],axis=2) * (1-dark_mask*0.85)
     return im(np.clip(out, 0, 255))
 
-# ── 19. color_channel_tornado ─────────────────────────────────────────────────
+# ── 16. color_channel_tornado ─────────────────────────────────────────────────
 def color_channel_tornado(src):
     """Each colour channel rotated by a different angle around image centre."""
     arr = a(src); h, w = arr.shape[:2]
@@ -550,7 +550,7 @@ def color_channel_tornado(src):
         out[:,:,ch] = arr[sy, sx, ch]
     return sat(im(out), 2.2)
 
-# ── 21. short_circuit ─────────────────────────────────────────────────────────
+# ── 17. short_circuit ─────────────────────────────────────────────────────────
 def short_circuit(src):
     """Electrical arc discharge: white-hot arc paths, char black, ozone blue."""
     arr = a(src); h, w = arr.shape[:2]
@@ -576,7 +576,7 @@ def short_circuit(src):
     out = char + ozone + arc_blur*1.5
     return im(np.clip(out, 0, 255))
 
-# ── 23. pollen_cloud ──────────────────────────────────────────────────────────
+# ── 18. pollen_cloud ──────────────────────────────────────────────────────────
 def pollen_cloud(src):
     """Allergenic pollen dispersal: golden-yellow soft clouds with spore dots."""
     arr = a(src); h, w = arr.shape[:2]
@@ -600,7 +600,7 @@ def pollen_cloud(src):
     bloom = gblur(base, 16)*0.3
     return sat(im(np.clip(base+spore_blur+bloom,0,255)), 2.2)
 
-# ── 24. mycelium_network ──────────────────────────────────────────────────────
+# ── 19. mycelium_network ──────────────────────────────────────────────────────
 def mycelium_network(src):
     """Fungal mycelium: dark earth tones, white thread network, spore glow."""
     arr = a(src)
@@ -619,7 +619,7 @@ def mycelium_network(src):
     spore_glow = gblur(np.stack([spore_mask*255,spore_mask*160,spore_mask*20],axis=2),10)*0.6
     return im(np.clip(base+threads+thread_bloom+spore_glow, 0,255))
 
-# ── 25. polarisation_filter ───────────────────────────────────────────────────
+# ── 20. polarisation_filter ───────────────────────────────────────────────────
 def polarisation_filter(src):
     """Cross-polarised light through birefringent crystal: vivid stress colours."""
     arr = a(src); h, w = arr.shape[:2]
@@ -635,7 +635,7 @@ def polarisation_filter(src):
     out = np.stack([r,g,b],axis=2)*extinction[:,:,np.newaxis]
     return sat(im(np.clip(out,0,255)), 3.2)
 
-# ── 26. oxidised_neon_tube ────────────────────────────────────────────────────
+# ── 21. oxidised_neon_tube ────────────────────────────────────────────────────
 def oxidised_neon_tube(src):
     """Old neon sign with failing gas: patches of red, white, dark gaps."""
     arr = a(src); h, w = arr.shape[:2]
@@ -660,7 +660,7 @@ def oxidised_neon_tube(src):
                                                     base[ry:ry+rh,rx:rx+rw]*2.5+50])
     return im(np.clip(base,0,255))
 
-# ── 27. geological_core ───────────────────────────────────────────────────────
+# ── 22. geological_core ───────────────────────────────────────────────────────
 def geological_core(src):
     """Drill core sample: horizontal sediment strata in earthy mineral tones."""
     arr = a(src); h, w = arr.shape[:2]
@@ -696,7 +696,7 @@ def geological_core(src):
 
     return con(im(np.clip(out,0,255)), 1.4)
 
-# ── 29. gradient_map_noir ─────────────────────────────────────────────────────
+# ── 23. gradient_map_noir ─────────────────────────────────────────────────────
 def gradient_map_noir(src):
     """Gradient map: black→deep crimson→gold→cream, high contrast film look."""
     arr = a(src); x = lum(arr)/255.0
@@ -717,7 +717,7 @@ def gradient_map_noir(src):
             out[mask,ch] = c0[ch]*(1-t)+c1[ch]*t
     return con(im(out), 1.6)
 
-# ── 30. satellite_false_color ─────────────────────────────────────────────────
+# ── 24. satellite_false_color ─────────────────────────────────────────────────
 def satellite_false_color(src):
     """Landsat false-colour composite: vegetation→red, water→black, urban→cyan."""
     arr = a(src)
@@ -735,7 +735,7 @@ def satellite_false_color(src):
     r = np.clip(r - water*60, 0,255)
     return sat(im(np.stack([r,g,b],axis=2)), 2.0)
 
-# ── 31. glassblower ───────────────────────────────────────────────────────────
+# ── 25. glassblower ───────────────────────────────────────────────────────────
 def glassblower(src):
     """Molten borosilicate glass: transparent amber, trapped bubble caustics."""
     arr = a(src); h, w = arr.shape[:2]
@@ -755,7 +755,7 @@ def glassblower(src):
     ripple = (np.sin(ripple_phase)*0.5+0.5)[:,:,np.newaxis]*20
     return sat(im(np.clip(base+shine+ripple,0,255)), 1.8)
 
-# ── 33. refraction_pool ───────────────────────────────────────────────────────
+# ── 26. refraction_pool ───────────────────────────────────────────────────────
 def refraction_pool(src):
     """Underwater caustic refraction: wavy bright lines on teal floor."""
     arr = a(src); h, w = arr.shape[:2]
@@ -777,7 +777,7 @@ def refraction_pool(src):
     warped[:,:,2] = np.clip(warped[:,:,2]+caustics*0.7,0,255)
     return sat(im(warped),1.8)
 
-# ── 34. neon_rain_japan ───────────────────────────────────────────────────────
+# ── 27. neon_rain_japan ───────────────────────────────────────────────────────
 def neon_rain_japan(src):
     """Shinjuku night rain: vertical neon reflections, pink kanji glow."""
     arr = a(src); h, w = arr.shape[:2]
@@ -799,7 +799,7 @@ def neon_rain_japan(src):
     blended[:,:,1] = np.clip(blended[:,:,1]*0.7,    0,255)
     return sat(im(np.clip(blended,0,255)), 2.6)
 
-# ── 35. chromatic_spiral ──────────────────────────────────────────────────────
+# ── 28. chromatic_spiral ──────────────────────────────────────────────────────
 def chromatic_spiral(src):
     """Logarithmic spiral hue rotation: image twisted into colour vortex."""
     arr = a(src); h, w = arr.shape[:2]
@@ -818,31 +818,7 @@ def chromatic_spiral(src):
             out[mask] = hue_rotate_arr(arr[mask].reshape(1,-1,3), float(deg_val)).reshape(-1,3)
     return sat(im(np.clip(out,0,255)), 2.6)
 
-# ── 36. analogue_xerox ────────────────────────────────────────────────────────
-def analogue_xerox(src):
-    """80s photocopier: blown-out whites, crushed blacks, cyan toner bleeding."""
-    arr = a(src)
-    x = lum(arr)/255.0
-    # aggressive threshold-like contrast
-    harsh = np.where(x>0.5, np.power((x-0.5)*2,0.3), np.power(x*2,3)*0.5)
-    r = np.clip(harsh*220 + 10, 0,255)
-    g = np.clip(harsh*230 + 15, 0,255)
-    b = np.clip(harsh*255 + 30, 0,255)
-    base = np.stack([r,g,b],axis=2)
-    # cyan toner bleed on dark edges
-    e = edg(src)/255.0
-    base[:,:,1] = np.clip(base[:,:,1]+e*60, 0,255)
-    base[:,:,2] = np.clip(base[:,:,2]+e*90, 0,255)
-    base[:,:,0] = np.clip(base[:,:,0]-e*30, 0,255)
-    # horizontal streaks (paper dust)
-    rng = np.random.default_rng(19)
-    h_i,w_i = arr.shape[:2]
-    for _ in range(6):
-        y = rng.integers(0,h_i); strength = rng.uniform(0.02,0.15)
-        base[y:y+2,:] = np.clip(base[y:y+2,:]+strength*255,0,255)
-    return im(np.clip(base,0,255))
-
-# ── 37. spectrum_inversion ────────────────────────────────────────────────────
+# ── 29. spectrum_inversion ────────────────────────────────────────────────────
 def spectrum_inversion(src):
     """Each pixel's hue inverted (rotated 180°) while keeping luminance."""
     arr = a(src)
@@ -854,7 +830,7 @@ def spectrum_inversion(src):
     result   = rotated*scale
     return sat(im(np.clip(result,0,255)), 2.0)
 
-# ── 38. magnetic_field_lines ──────────────────────────────────────────────────
+# ── 30. magnetic_field_lines ──────────────────────────────────────────────────
 def magnetic_field_lines(src):
     """Iron-filing field lines around image as dipole: gold on deep indigo."""
     arr = a(src); h, w = arr.shape[:2]
@@ -876,32 +852,6 @@ def magnetic_field_lines(src):
     dark  = arr*0.2
     return sat(im(np.clip(dark+field,0,255)), 2.8)
 
-# ── 39. expired_slide_film ────────────────────────────────────────────────────
-def expired_slide_film(src):
-    """Kodachrome left in a hot car: magenta fog, cyan shadows, yellow grain."""
-    arr = a(src); h, w = arr.shape[:2]
-    rng = np.random.default_rng(58)
-    x = lum(arr)/255.0
-    # colour fog: add magenta base
-    r = np.clip(arr[:,:,0]*0.9 + 40,  0,255)
-    g = np.clip(arr[:,:,1]*0.6 - 10,  0,255)
-    b = np.clip(arr[:,:,2]*0.8 + 30,  0,255)
-    # cyan shadow: where it's dark push cyan
-    shadow = (1-x)**2
-    g2 = np.clip(g + shadow*60, 0,255)
-    b2 = np.clip(b + shadow*80, 0,255)
-    # yellow grain
-    grain = rng.standard_normal((h,w)).astype(np.float32)*12
-    r3 = np.clip(r+grain,     0,255)
-    g3 = np.clip(g2+grain*0.8,0,255)
-    b3 = np.clip(b2-grain*0.3,0,255)
-    # vignette
-    cy2,cx2 = h/2,w/2
-    ys2,xs2 = np.mgrid[0:h,0:w]
-    vign = 1-np.clip(np.sqrt(((xs2-cx2)/cx2)**2+((ys2-cy2)/cy2)**2)*0.7,0,1)
-    out  = np.stack([r3,g3,b3],axis=2)*vign[:,:,np.newaxis]
-    return sat(im(np.clip(out,0,255)), 1.5)
-
 
 # ══════════════════════════════════════════════════════════════════════════════
 FILTERS = {
@@ -909,34 +859,32 @@ FILTERS = {
     "02_kelvin_shift":          kelvin_shift,
     "03_liquid_nitrogen":       liquid_nitrogen,
     "04_venetian_fresco":       venetian_fresco,
-    "06_sepia_overdrive":       sepia_overdrive,
-    "07_aurora_column":         aurora_column,
-    "09_polaroid_melt":         polaroid_melt,
-    "10_deep_ultraviolet":      deep_ultraviolet,
-    "11_chromakey_ghost":       chromakey_ghost,
-    "12_thermal_gradient_v2":   thermal_gradient_v2,
-    "13_riso_print":            riso_print,
-    "14_lenticular_shift":      lenticular_shift,
-    "15_neutrino_scan":         neutrino_scan,
-    "17_neon_sashimi":          neon_sashimi,
-    "18_electron_microscope":   electron_microscope,
-    "19_color_channel_tornado":  color_channel_tornado,
-    "21_short_circuit":         short_circuit,
-    "23_pollen_cloud":          pollen_cloud,
-    "24_mycelium_network":      mycelium_network,
-    "25_polarisation_filter":   polarisation_filter,
-    "26_oxidised_neon_tube":    oxidised_neon_tube,
-    "27_geological_core":       geological_core,
-    "29_gradient_map_noir":     gradient_map_noir,
-    "30_satellite_false_color": satellite_false_color,
-    "31_glassblower":           glassblower,
-    "33_refraction_pool":       refraction_pool,
-    "34_neon_rain_japan":       neon_rain_japan,
-    "35_chromatic_spiral":      chromatic_spiral,
-    "36_analogue_xerox":        analogue_xerox,
-    "37_spectrum_inversion":    spectrum_inversion,
-    "38_magnetic_field_lines":  magnetic_field_lines,
-    "39_expired_slide_film":    expired_slide_film,
+    "05_sepia_overdrive":       sepia_overdrive,
+    "06_aurora_column":         aurora_column,
+    "07_polaroid_melt":         polaroid_melt,
+    "08_deep_ultraviolet":      deep_ultraviolet,
+    "09_chromakey_ghost":       chromakey_ghost,
+    "10_thermal_gradient_v2":   thermal_gradient_v2,
+    "11_riso_print":            riso_print,
+    "12_lenticular_shift":      lenticular_shift,
+    "13_neutrino_scan":         neutrino_scan,
+    "14_neon_sashimi":          neon_sashimi,
+    "15_electron_microscope":   electron_microscope,
+    "16_color_channel_tornado": color_channel_tornado,
+    "17_short_circuit":         short_circuit,
+    "18_pollen_cloud":          pollen_cloud,
+    "19_mycelium_network":      mycelium_network,
+    "20_polarisation_filter":   polarisation_filter,
+    "21_oxidised_neon_tube":    oxidised_neon_tube,
+    "22_geological_core":       geological_core,
+    "23_gradient_map_noir":     gradient_map_noir,
+    "24_satellite_false_color": satellite_false_color,
+    "25_glassblower":           glassblower,
+    "26_refraction_pool":       refraction_pool,
+    "27_neon_rain_japan":       neon_rain_japan,
+    "28_chromatic_spiral":      chromatic_spiral,
+    "29_spectrum_inversion":    spectrum_inversion,
+    "30_magnetic_field_lines":  magnetic_field_lines,
 }
 
 
