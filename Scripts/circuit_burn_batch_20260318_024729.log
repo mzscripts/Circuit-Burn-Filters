@@ -1,0 +1,226 @@
+2026-03-18 02:47:29,366 | INFO | ========================================================================
+2026-03-18 02:47:29,366 | INFO | Circuit Burn Batch Runner
+2026-03-18 02:47:29,367 | INFO | ========================================================================
+2026-03-18 02:47:29,367 | INFO | Input folder: Z:\The Automation Projects\Circuit Burn Filters\input-IMG
+2026-03-18 02:47:29,368 | INFO | Output folder: Z:\The Automation Projects\Circuit Burn Filters\Scripts\combined_output
+2026-03-18 02:47:29,368 | INFO | Images found: 1
+2026-03-18 02:47:29,368 | INFO | Filters per image: 202
+2026-03-18 02:47:29,368 | INFO | Workers: 8
+2026-03-18 02:47:29,369 | INFO | Overwrite: False
+2026-03-18 02:47:29,369 | INFO | [image-start] 1/1 | 5b369f9c-02fd-41ad-adc2-88f81ffe7075.jpg
+2026-03-18 02:47:29,370 | INFO | ------------------------------------------------------------------------
+2026-03-18 02:47:29,370 | INFO | [load] image 1/1 | path=5b369f9c-02fd-41ad-adc2-88f81ffe7075.jpg
+2026-03-18 02:47:29,417 | INFO | [ready] 5b369f9c-02fd-41ad-adc2-88f81ffe7075.jpg | size=1242x2208 | jobs=202 | workers=8
+2026-03-18 02:47:29,423 | INFO | [skip] #002 v1/02_thermal_vision | 002_v1_02_thermal_vision_001.png | time=0.00s
+2026-03-18 02:47:29,424 | INFO | [skip] #012 v1/13_uv_flood | 012_v1_13_uv_flood_001.png | time=0.00s
+2026-03-18 02:47:29,425 | INFO | [skip] #004 v1/04_chromatic_melt | 004_v1_04_chromatic_melt_001.png | time=0.00s
+2026-03-18 02:47:29,426 | INFO | [skip] #006 v1/06_psychedelic_solarise | 006_v1_06_psychedelic_solarise_001.png | time=0.00s
+2026-03-18 02:47:29,427 | INFO | [skip] #014 v1/15_glitch_datamosh | 014_v1_15_glitch_datamosh_001.png | time=0.00s
+2026-03-18 02:47:29,429 | INFO | [skip] #011 v1/12_rainbow_scan | 011_v1_12_rainbow_scan_001.png | time=0.00s
+2026-03-18 02:47:29,444 | INFO | [skip] #003 v1/03_vhs_glitch | 003_v1_03_vhs_glitch_001.png | time=0.00s
+2026-03-18 02:47:29,486 | INFO | [skip] #005 v1/05_neon_edge_burn | 005_v1_05_neon_edge_burn_001.png | time=0.00s
+2026-03-18 02:47:29,494 | INFO | [skip] #007 v1/07_false_color_terrain | 007_v1_07_false_color_terrain_001.png | time=0.00s
+2026-03-18 02:47:29,498 | INFO | [skip] #001 v1/01_acid_palette | 001_v1_01_acid_palette_001.png | time=0.00s
+2026-03-18 02:47:29,502 | INFO | [skip] #010 v1/11_circuit_trace | 010_v1_11_circuit_trace_001.png | time=0.00s
+2026-03-18 02:47:29,512 | INFO | [skip] #009 v1/10_electric_sky | 009_v1_10_electric_sky_001.png | time=0.00s
+2026-03-18 02:47:29,514 | INFO | [skip] #015 v1/16_negative_burn | 015_v1_16_negative_burn_001.png | time=0.00s
+2026-03-18 02:47:29,514 | INFO | [skip] #017 v1/18_neural_dissolve | 017_v1_18_neural_dissolve_001.png | time=0.00s
+2026-03-18 02:47:29,514 | INFO | [skip] #021 v1/24_xray_film | 021_v1_24_xray_film_001.png | time=0.00s
+2026-03-18 02:47:29,514 | INFO | [skip] #018 v1/19_plasma_interference | 018_v1_19_plasma_interference_001.png | time=0.00s
+2026-03-18 02:47:29,515 | INFO | [skip] #016 v1/17_holographic_sheen | 016_v1_17_holographic_sheen_001.png | time=0.00s
+2026-03-18 02:47:29,518 | INFO | [skip] #025 v1/28_candy_chrome | 025_v1_28_candy_chrome_001.png | time=0.00s
+2026-03-18 02:47:29,518 | INFO | [skip] #013 v1/14_infrared_foliage | 013_v1_14_infrared_foliage_001.png | time=0.00s
+2026-03-18 02:47:29,520 | INFO | [skip] #020 v1/23_lime_poison | 020_v1_23_lime_poison_001.png | time=0.00s
+2026-03-18 02:47:29,530 | INFO | [skip] #026 v1/29_crimson_noir | 026_v1_29_crimson_noir_001.png | time=0.00s
+2026-03-18 02:47:29,539 | INFO | [skip] #019 v1/22_cobalt_overload | 019_v1_22_cobalt_overload_001.png | time=0.00s
+2026-03-18 02:47:29,549 | INFO | [skip] #022 v1/25_lava_flow | 022_v1_25_lava_flow_001.png | time=0.00s
+2026-03-18 02:47:29,557 | INFO | [skip] #030 v2/03_gamma_burst | 030_v2_03_gamma_burst_001.png | time=0.00s
+2026-03-18 02:47:29,564 | INFO | [skip] #027 v1/30_aurora_bleed | 027_v1_30_aurora_bleed_001.png | time=0.00s
+2026-03-18 02:47:29,565 | INFO | [skip] #028 v2/01_bismuth_crystal | 028_v2_01_bismuth_crystal_001.png | time=0.00s
+2026-03-18 02:47:29,565 | INFO | [skip] #029 v2/02_void_static | 029_v2_02_void_static_001.png | time=0.00s
+2026-03-18 02:47:29,566 | INFO | [skip] #033 v2/06_absinthe_drip | 033_v2_06_absinthe_drip_001.png | time=0.00s
+2026-03-18 02:47:29,567 | INFO | [skip] #023 v1/26_oil_slick | 023_v1_26_oil_slick_001.png | time=0.00s
+2026-03-18 02:47:29,567 | INFO | [skip] #035 v2/08_magma_crust | 035_v2_08_magma_crust_001.png | time=0.00s
+2026-03-18 02:47:29,568 | INFO | [skip] #036 v2/09_cerebral_cortex | 036_v2_09_cerebral_cortex_001.png | time=0.00s
+2026-03-18 02:47:29,568 | INFO | [skip] #037 v2/10_retinal_burn | 037_v2_10_retinal_burn_001.png | time=0.00s
+2026-03-18 02:47:29,568 | INFO | [skip] #034 v2/07_ghost_frequency | 034_v2_07_ghost_frequency_001.png | time=0.00s
+2026-03-18 02:47:29,578 | INFO | [skip] #040 v2/13_prism_shatter | 040_v2_13_prism_shatter_001.png | time=0.00s
+2026-03-18 02:47:29,591 | INFO | [skip] #041 v2/14_ferrofluid | 041_v2_14_ferrofluid_001.png | time=0.00s
+2026-03-18 02:47:29,609 | INFO | [skip] #039 v2/12_neon_autopsy | 039_v2_12_neon_autopsy_001.png | time=0.00s
+2026-03-18 02:47:29,642 | INFO | [skip] #038 v2/11_sulfur_springs | 038_v2_11_sulfur_springs_001.png | time=0.00s
+2026-03-18 02:47:29,646 | INFO | [skip] #044 v2/17_quantum_foam | 044_v2_17_quantum_foam_001.png | time=0.00s
+2026-03-18 02:47:29,653 | INFO | [skip] #042 v2/15_dichroic_glass | 042_v2_15_dichroic_glass_001.png | time=0.00s
+2026-03-18 02:47:29,685 | INFO | [skip] #046 v2/19_nerve_signal | 046_v2_19_nerve_signal_001.png | time=0.00s
+2026-03-18 02:47:29,688 | INFO | [skip] #045 v2/18_cassette_dub | 045_v2_18_cassette_dub_001.png | time=0.00s
+2026-03-18 02:47:29,700 | INFO | [skip] #048 v2/21_solar_wind | 048_v2_21_solar_wind_001.png | time=0.00s
+2026-03-18 02:47:30,498 | INFO | [ok] #031 v2/04_oxidised_silver | 031_v2_04_oxidised_silver_001.png | 1242x2208 | 3.89 MB | time=1.07s
+2026-03-18 02:47:30,511 | INFO | [ok] #049 v2/22_crt_phosphor | 049_v2_22_crt_phosphor_001.png | 1242x2208 | 1.85 MB | time=1.08s
+2026-03-18 02:47:30,525 | INFO | [ok] #047 v2/20_oxidised_copper_green | 047_v2_20_oxidised_copper_green_001.png | 1242x2208 | 3.78 MB | time=1.09s
+2026-03-18 02:47:30,526 | INFO | [skip] #053 v2/28_phosphene_grid | 053_v2_28_phosphene_grid_001.png | time=0.01s
+2026-03-18 02:47:30,529 | INFO | [skip] #054 v2/29_rust_bloom | 054_v2_29_rust_bloom_001.png | time=0.00s
+2026-03-18 02:47:30,533 | INFO | [skip] #055 v2/30_sodium_vapor | 055_v2_30_sodium_vapor_001.png | time=0.00s
+2026-03-18 02:47:30,559 | INFO | [skip] #056 v2/31_corrupted_memory | 056_v2_31_corrupted_memory_001.png | time=0.00s
+2026-03-18 02:47:30,575 | INFO | [skip] #057 v2/32_interference_bands | 057_v2_32_interference_bands_001.png | time=0.00s
+2026-03-18 02:47:30,581 | INFO | [skip] #058 v2/33_teal_orange_split | 058_v2_33_teal_orange_split_001.png | time=0.00s
+2026-03-18 02:47:30,604 | INFO | [skip] #059 v2/34_hypnodisk | 059_v2_34_hypnodisk_001.png | time=0.00s
+2026-03-18 02:47:30,615 | INFO | [ok] #032 v2/05_tungsten_filament | 032_v2_05_tungsten_filament_001.png | 1242x2208 | 3.53 MB | time=1.11s
+2026-03-18 02:47:30,621 | INFO | [skip] #061 v2/36_dna_sequencer | 061_v2_36_dna_sequencer_001.png | time=0.00s
+2026-03-18 02:47:30,650 | INFO | [ok] #043 v2/16_strontium_fire | 043_v2_16_strontium_fire_001.png | 1242x2208 | 2.87 MB | time=1.15s
+2026-03-18 02:47:30,654 | INFO | [skip] #063 v2/38_acid_rain | 063_v2_38_acid_rain_001.png | time=0.00s
+2026-03-18 02:47:30,665 | INFO | [skip] #064 v2/40_carnival_mirror | 064_v2_40_carnival_mirror_001.png | time=0.00s
+2026-03-18 02:47:30,666 | INFO | [skip] #065 v3/01_mandelbrot_dye | 065_v3_01_mandelbrot_dye_001.png | time=0.00s
+2026-03-18 02:47:30,667 | INFO | [skip] #066 v3/02_kelvin_shift | 066_v3_02_kelvin_shift_001.png | time=0.00s
+2026-03-18 02:47:30,685 | INFO | [skip] #067 v3/03_liquid_nitrogen | 067_v3_03_liquid_nitrogen_001.png | time=0.00s
+2026-03-18 02:47:30,687 | INFO | [skip] #068 v3/04_venetian_fresco | 068_v3_04_venetian_fresco_001.png | time=0.00s
+2026-03-18 02:47:30,701 | INFO | [skip] #069 v3/06_sepia_overdrive | 069_v3_06_sepia_overdrive_001.png | time=0.00s
+2026-03-18 02:47:30,712 | INFO | [skip] #070 v3/07_aurora_column | 070_v3_07_aurora_column_001.png | time=0.00s
+2026-03-18 02:47:30,713 | INFO | [skip] #071 v3/09_polaroid_melt | 071_v3_09_polaroid_melt_001.png | time=0.00s
+2026-03-18 02:47:30,714 | INFO | [ok] #024 v1/27_deep_sea | 024_v1_27_deep_sea_001.png | 1242x2208 | 3.34 MB | time=1.23s
+2026-03-18 02:47:30,714 | INFO | [skip] #073 v3/11_chromakey_ghost | 073_v3_11_chromakey_ghost_001.png | time=0.00s
+2026-03-18 02:47:30,714 | INFO | [skip] #074 v3/12_thermal_gradient_v2 | 074_v3_12_thermal_gradient_v2_001.png | time=0.00s
+2026-03-18 02:47:30,715 | INFO | [skip] #075 v3/13_riso_print | 075_v3_13_riso_print_001.png | time=0.00s
+2026-03-18 02:47:30,715 | INFO | [skip] #076 v3/14_lenticular_shift | 076_v3_14_lenticular_shift_001.png | time=0.00s
+2026-03-18 02:47:30,737 | INFO | [skip] #077 v3/15_neutrino_scan | 077_v3_15_neutrino_scan_001.png | time=0.00s
+2026-03-18 02:47:30,737 | INFO | [skip] #078 v3/17_neon_sashimi | 078_v3_17_neon_sashimi_001.png | time=0.00s
+2026-03-18 02:47:30,737 | INFO | [skip] #079 v3/18_electron_microscope | 079_v3_18_electron_microscope_001.png | time=0.00s
+2026-03-18 02:47:30,737 | INFO | [skip] #080 v3/19_color_channel_tornado | 080_v3_19_color_channel_tornado_001.png | time=0.00s
+2026-03-18 02:47:30,740 | INFO | [skip] #081 v3/21_short_circuit | 081_v3_21_short_circuit_001.png | time=0.00s
+2026-03-18 02:47:30,741 | INFO | [skip] #082 v3/23_pollen_cloud | 082_v3_23_pollen_cloud_001.png | time=0.00s
+2026-03-18 02:47:30,742 | INFO | [skip] #083 v3/24_mycelium_network | 083_v3_24_mycelium_network_001.png | time=0.00s
+2026-03-18 02:47:30,742 | INFO | [skip] #084 v3/25_polarisation_filter | 084_v3_25_polarisation_filter_001.png | time=0.00s
+2026-03-18 02:47:30,835 | INFO | [ok] #050 v2/23_tritium_glow | 050_v2_23_tritium_glow_001.png | 1242x2208 | 2.77 MB | time=1.41s
+2026-03-18 02:47:30,962 | INFO | [skip] #086 v3/27_geological_core | 086_v3_27_geological_core_001.png | time=0.00s
+2026-03-18 02:47:31,047 | INFO | [skip] #087 v3/29_gradient_map_noir | 087_v3_29_gradient_map_noir_001.png | time=0.00s
+2026-03-18 02:47:31,141 | INFO | [skip] #088 v3/30_satellite_false_color | 088_v3_30_satellite_false_color_001.png | time=0.00s
+2026-03-18 02:47:31,151 | INFO | [skip] #089 v3/31_glassblower | 089_v3_31_glassblower_001.png | time=0.00s
+2026-03-18 02:47:31,151 | INFO | [skip] #090 v3/33_refraction_pool | 090_v3_33_refraction_pool_001.png | time=0.00s
+2026-03-18 02:47:31,168 | INFO | [skip] #091 v3/34_neon_rain_japan | 091_v3_34_neon_rain_japan_001.png | time=0.00s
+2026-03-18 02:47:31,187 | INFO | [skip] #092 v3/35_chromatic_spiral | 092_v3_35_chromatic_spiral_001.png | time=0.00s
+2026-03-18 02:47:31,195 | INFO | [skip] #093 v3/36_analogue_xerox | 093_v3_36_analogue_xerox_001.png | time=0.00s
+2026-03-18 02:47:31,199 | INFO | [skip] #094 v3/37_spectrum_inversion | 094_v3_37_spectrum_inversion_001.png | time=0.00s
+2026-03-18 02:47:31,200 | INFO | [skip] #095 v3/38_magnetic_field_lines | 095_v3_38_magnetic_field_lines_001.png | time=0.00s
+2026-03-18 02:47:31,200 | INFO | [skip] #096 v3/39_expired_slide_film | 096_v3_39_expired_slide_film_001.png | time=0.00s
+2026-03-18 02:47:31,200 | INFO | [skip] #097 v4/01_open_sign_neon | 097_v4_01_open_sign_neon_001.png | time=0.00s
+2026-03-18 02:47:31,200 | INFO | [skip] #098 v4/02_infrared_foliage_rainbow | 098_v4_02_infrared_foliage_rainbow_001.png | time=0.00s
+2026-03-18 02:47:31,200 | INFO | [skip] #099 v4/03_rainbow_treeline | 099_v4_03_rainbow_treeline_001.png | time=0.00s
+2026-03-18 02:47:31,200 | INFO | [skip] #100 v4/04_pine_solarise | 100_v4_04_pine_solarise_001.png | time=0.00s
+2026-03-18 02:47:31,200 | INFO | [skip] #101 v4/05_scan_lines_ghost | 101_v4_05_scan_lines_ghost_001.png | time=0.00s
+2026-03-18 02:47:31,200 | INFO | [skip] #102 v4/06_silhouette_static | 102_v4_06_silhouette_static_001.png | time=0.00s
+2026-03-18 02:47:31,201 | INFO | [skip] #103 v4/07_cityscape_teal_scan | 103_v4_07_cityscape_teal_scan_001.png | time=0.00s
+2026-03-18 02:47:31,201 | INFO | [ok] #008 v1/09_deep_field_blur | 008_v1_09_deep_field_blur_001.png | 1242x2208 | 3.61 MB | time=1.54s
+2026-03-18 02:47:31,201 | INFO | [skip] #105 v4/09_lsd_mountains | 105_v4_09_lsd_mountains_001.png | time=0.00s
+2026-03-18 02:47:31,201 | INFO | [skip] #106 v4/10_vaporwave_figure | 106_v4_10_vaporwave_figure_001.png | time=0.00s
+2026-03-18 02:47:31,201 | INFO | [skip] #107 v4/13_double_exposure_face | 107_v4_13_double_exposure_face_001.png | time=0.00s
+2026-03-18 02:47:31,201 | INFO | [skip] #108 v4/14_acid_flesh_pink | 108_v4_14_acid_flesh_pink_001.png | time=0.00s
+2026-03-18 02:47:31,201 | INFO | [skip] #109 v4/16_church_magenta | 109_v4_16_church_magenta_001.png | time=0.00s
+2026-03-18 02:47:31,202 | INFO | [skip] #110 v4/17_gold_leaf_forest | 110_v4_17_gold_leaf_forest_001.png | time=0.00s
+2026-03-18 02:47:31,202 | INFO | [skip] #111 v4/19_neon_petals | 111_v4_19_neon_petals_001.png | time=0.00s
+2026-03-18 02:47:31,205 | INFO | [skip] #112 v4/20_red_static_wall | 112_v4_20_red_static_wall_001.png | time=0.00s
+2026-03-18 02:47:31,255 | INFO | [skip] #113 v4/21_hue_shift_cascade | 113_v4_21_hue_shift_cascade_001.png | time=0.00s
+2026-03-18 02:47:31,270 | INFO | [skip] #114 v4/22_scanline_portrait | 114_v4_22_scanline_portrait_001.png | time=0.00s
+2026-03-18 02:47:31,278 | INFO | [skip] #115 v4/23_neon_edge_trace_v2 | 115_v4_23_neon_edge_trace_v2_001.png | time=0.00s
+2026-03-18 02:47:31,279 | INFO | [skip] #116 v4/24_glitch_rgb_bleed | 116_v4_24_glitch_rgb_bleed_001.png | time=0.00s
+2026-03-18 02:47:31,280 | INFO | [skip] #117 v4/25_contour_map_vivid | 117_v4_25_contour_map_vivid_001.png | time=0.00s
+2026-03-18 02:47:31,291 | INFO | [skip] #118 v4/26_burnt_chrome | 118_v4_26_burnt_chrome_001.png | time=0.00s
+2026-03-18 02:47:31,298 | INFO | [skip] #119 v4/27_warhol_quad | 119_v4_27_warhol_quad_001.png | time=0.00s
+2026-03-18 02:47:31,300 | INFO | [skip] #120 v4/28_thermal_body_scan | 120_v4_28_thermal_body_scan_001.png | time=0.00s
+2026-03-18 02:47:31,301 | INFO | [skip] #121 v4/31_glitch_column_shift | 121_v4_31_glitch_column_shift_001.png | time=0.00s
+2026-03-18 02:47:31,301 | INFO | [skip] #122 v4/32_cross_process_e6 | 122_v4_32_cross_process_e6_001.png | time=0.00s
+2026-03-18 02:47:31,302 | INFO | [skip] #123 v4/33_barbed_wire_burn | 123_v4_33_barbed_wire_burn_001.png | time=0.00s
+2026-03-18 02:47:31,302 | INFO | [skip] #124 v4/34_pixel_sort_column | 124_v4_34_pixel_sort_column_001.png | time=0.00s
+2026-03-18 02:47:31,302 | INFO | [skip] #125 v4/35_neon_jungle | 125_v4_35_neon_jungle_001.png | time=0.00s
+2026-03-18 02:47:31,334 | INFO | [skip] #126 v4/36_posterise_cmyk | 126_v4_36_posterise_cmyk_001.png | time=0.00s
+2026-03-18 02:47:31,348 | INFO | [skip] #127 v4/37_laser_etch_red | 127_v4_37_laser_etch_red_001.png | time=0.00s
+2026-03-18 02:47:31,386 | INFO | [skip] #128 v4/39_monochrome_infrared | 128_v4_39_monochrome_infrared_001.png | time=0.00s
+2026-03-18 02:47:31,397 | INFO | [skip] #129 v4/40_chromatic_displacement | 129_v4_40_chromatic_displacement_001.png | time=0.00s
+2026-03-18 02:47:31,411 | INFO | [skip] #130 class1/minidv_dropframe | 130_class1_minidv_dropframe_001.png | time=0.00s
+2026-03-18 02:47:31,412 | INFO | [skip] #131 class1/nightbus_cmos | 131_class1_nightbus_cmos_001.png | time=0.00s
+2026-03-18 02:47:31,412 | INFO | [skip] #132 class1/tape_head_damage | 132_class1_tape_head_damage_001.png | time=0.00s
+2026-03-18 02:47:31,412 | INFO | [skip] #133 class1/handycam_ghostwalk | 133_class1_handycam_ghostwalk_001.png | time=0.00s
+2026-03-18 02:47:31,412 | INFO | [skip] #134 class1/clubcam_redroom | 134_class1_clubcam_redroom_001.png | time=0.00s
+2026-03-18 02:47:31,413 | INFO | [skip] #135 class1/security_stairwell | 135_class1_security_stairwell_001.png | time=0.00s
+2026-03-18 02:47:31,413 | INFO | [skip] #136 class1/found_footage_burn | 136_class1_found_footage_burn_001.png | time=0.00s
+2026-03-18 02:47:31,413 | INFO | [skip] #137 class1/decoder_crush | 137_class1_decoder_crush_001.png | time=0.00s
+2026-03-18 02:47:31,413 | INFO | [skip] #138 class1/ir_nightwatch | 138_class1_ir_nightwatch_001.png | time=0.00s
+2026-03-18 02:47:31,422 | INFO | [skip] #139 class1/vertical_hold_fail | 139_class1_vertical_hold_fail_001.png | time=0.00s
+2026-03-18 02:47:31,429 | INFO | [skip] #140 class1/memory_card_bleed | 140_class1_memory_card_bleed_001.png | time=0.00s
+2026-03-18 02:47:31,433 | INFO | [skip] #141 class1/rolling_shutter_panic | 141_class1_rolling_shutter_panic_001.png | time=0.00s
+2026-03-18 02:47:31,434 | INFO | [skip] #142 class1/tape_dropout | 142_class1_tape_dropout_001.png | time=0.00s
+2026-03-18 02:47:31,435 | INFO | [skip] #143 class1/surveillance_burnin | 143_class1_surveillance_burnin_001.png | time=0.00s
+2026-03-18 02:47:31,435 | INFO | [skip] #144 class1/lowlight_smear | 144_class1_lowlight_smear_001.png | time=0.00s
+2026-03-18 02:47:31,445 | INFO | [skip] #145 class1/signal_autopsy | 145_class1_signal_autopsy_001.png | time=0.00s
+2026-03-18 02:47:31,447 | INFO | [skip] #146 class1/noisy_portrait | 146_class1_noisy_portrait_001.png | time=0.00s
+2026-03-18 02:47:31,447 | INFO | [skip] #147 class1/crt_tear | 147_class1_crt_tear_001.png | time=0.00s
+2026-03-18 02:47:31,447 | INFO | [skip] #148 class1/timestamp_cam | 148_class1_timestamp_cam_001.png | time=0.00s
+2026-03-18 02:47:31,448 | INFO | [skip] #149 class1/datamosh_ghost | 149_class1_datamosh_ghost_001.png | time=0.00s
+2026-03-18 02:47:31,448 | INFO | [skip] #150 class1/scanline_warp | 150_class1_scanline_warp_001.png | time=0.00s
+2026-03-18 02:47:31,448 | INFO | [skip] #151 class1/dirty_sky_burn | 151_class1_dirty_sky_burn_001.png | time=0.00s
+2026-03-18 02:47:31,451 | INFO | [skip] #152 class1/edge_noise_emboss | 152_class1_edge_noise_emboss_001.png | time=0.00s
+2026-03-18 02:47:31,453 | INFO | [skip] #153 class1/rgb_face_break | 153_class1_rgb_face_break_001.png | time=0.00s
+2026-03-18 02:47:31,671 | INFO | [ok] #062 v2/37_chromosphere | 062_v2_37_chromosphere_001.png | 1242x2208 | 4.73 MB | time=1.14s
+2026-03-18 02:47:31,671 | INFO | [skip] #155 class1/partyfloor_overkill | 155_class1_partyfloor_overkill_001.png | time=0.00s
+2026-03-18 02:47:31,671 | INFO | [skip] #156 class1/broken_ccd | 156_class1_broken_ccd_001.png | time=0.00s
+2026-03-18 02:47:31,674 | INFO | [skip] #157 class1/dead_sensor | 157_class1_dead_sensor_001.png | time=0.00s
+2026-03-18 02:47:31,675 | INFO | [skip] #158 class1/memory_card_corrupt | 158_class1_memory_card_corrupt_001.png | time=0.00s
+2026-03-18 02:47:31,679 | INFO | [skip] #159 class1/vhs_drift | 159_class1_vhs_drift_001.png | time=0.00s
+2026-03-18 02:47:31,680 | INFO | [skip] #160 class1/pixel_melt | 160_class1_pixel_melt_001.png | time=0.00s
+2026-03-18 02:47:31,681 | INFO | [skip] #161 class1/jpeg_crush | 161_class1_jpeg_crush_001.png | time=0.00s
+2026-03-18 02:47:31,681 | INFO | [skip] #162 class1/signal_torn | 162_class1_signal_torn_001.png | time=0.00s
+2026-03-18 02:47:31,681 | INFO | [skip] #163 class1/night_vision | 163_class1_night_vision_001.png | time=0.00s
+2026-03-18 02:47:31,681 | INFO | [skip] #164 class1/infrared_bloom | 164_class1_infrared_bloom_001.png | time=0.00s
+2026-03-18 02:47:31,681 | INFO | [skip] #165 class1/xray_negative | 165_class1_xray_negative_001.png | time=0.00s
+2026-03-18 02:47:31,681 | INFO | [skip] #166 class1/void_stencil | 166_class1_void_stencil_001.png | time=0.00s
+2026-03-18 02:47:31,681 | INFO | [skip] #167 class1/solar_saint | 167_class1_solar_saint_001.png | time=0.00s
+2026-03-18 02:47:31,682 | INFO | [skip] #168 class1/xray_orchid | 168_class1_xray_orchid_001.png | time=0.00s
+2026-03-18 02:47:31,682 | INFO | [skip] #169 class1/plasma_ruins | 169_class1_plasma_ruins_001.png | time=0.00s
+2026-03-18 02:47:31,682 | INFO | [skip] #170 class1/ghost_negative | 170_class1_ghost_negative_001.png | time=0.00s
+2026-03-18 02:47:31,682 | INFO | [skip] #171 class1/moonlit_relic | 171_class1_moonlit_relic_001.png | time=0.00s
+2026-03-18 02:47:31,682 | INFO | [skip] #172 class1/prism_bloom | 172_class1_prism_bloom_001.png | time=0.00s
+2026-03-18 02:47:31,683 | INFO | [skip] #173 class1/funeral_sun | 173_class1_funeral_sun_001.png | time=0.00s
+2026-03-18 02:47:31,683 | INFO | [skip] #174 class1/hologram_grave | 174_class1_hologram_grave_001.png | time=0.00s
+2026-03-18 02:47:31,683 | INFO | [skip] #175 class1/bleached_oracle | 175_class1_bleached_oracle_001.png | time=0.00s
+2026-03-18 02:47:31,683 | INFO | [skip] #176 class1/ghost_in_the_lcd | 176_class1_ghost_in_the_lcd_001.png | time=0.00s
+2026-03-18 02:47:31,683 | INFO | [skip] #177 class1/classic_toycam | 177_class1_classic_toycam_001.png | time=0.00s
+2026-03-18 02:47:31,683 | INFO | [skip] #178 class1/pixless_plus | 178_class1_pixless_plus_001.png | time=0.00s
+2026-03-18 02:47:31,685 | INFO | [skip] #179 class1/sensor_grit | 179_class1_sensor_grit_001.png | time=0.00s
+2026-03-18 02:47:31,685 | INFO | [skip] #180 class1/lcd_dream | 180_class1_lcd_dream_001.png | time=0.00s
+2026-03-18 02:47:31,693 | INFO | [skip] #181 class1/night_sensor | 181_class1_night_sensor_001.png | time=0.00s
+2026-03-18 02:47:31,693 | INFO | [skip] #182 class1/broken_handheld | 182_class1_broken_handheld_001.png | time=0.00s
+2026-03-18 02:47:31,694 | INFO | [skip] #183 class1/v1_simple | 183_class1_v1_simple_001.png | time=0.00s
+2026-03-18 02:47:31,694 | INFO | [skip] #184 class1/v2_pixless_legacy | 184_class1_v2_pixless_legacy_001.png | time=0.00s
+2026-03-18 02:47:31,695 | INFO | [skip] #185 class1/v3_advanced_legacy | 185_class1_v3_advanced_legacy_001.png | time=0.00s
+2026-03-18 02:47:31,695 | INFO | [skip] #186 class1/cobalt_mask | 186_class1_cobalt_mask_001.png | time=0.00s
+2026-03-18 02:47:31,695 | INFO | [skip] #187 class1/toxic_thermal | 187_class1_toxic_thermal_001.png | time=0.00s
+2026-03-18 02:47:31,695 | INFO | [skip] #188 class1/melted_halo | 188_class1_melted_halo_001.png | time=0.00s
+2026-03-18 02:47:31,695 | INFO | [skip] #189 class1/rainbow_chapel | 189_class1_rainbow_chapel_001.png | time=0.00s
+2026-03-18 02:47:31,695 | INFO | [skip] #190 class1/graveyard_acid | 190_class1_graveyard_acid_001.png | time=0.00s
+2026-03-18 02:47:31,696 | INFO | [skip] #191 class1/spectral_void | 191_class1_spectral_void_001.png | time=0.00s
+2026-03-18 02:47:31,696 | INFO | [skip] #192 class1/pastel_angel | 192_class1_pastel_angel_001.png | time=0.00s
+2026-03-18 02:47:31,696 | INFO | [skip] #193 class1/neon_church | 193_class1_neon_church_001.png | time=0.00s
+2026-03-18 02:47:31,696 | INFO | [skip] #194 class1/aurora_statue | 194_class1_aurora_statue_001.png | time=0.00s
+2026-03-18 02:47:31,696 | INFO | [skip] #195 class1/glitch_pipeline | 195_class1_glitch_pipeline_001.png | time=0.00s
+2026-03-18 02:47:31,696 | INFO | [skip] #196 class1/psychedelic_circuit_bend | 196_class1_psychedelic_circuit_bend_001.png | time=0.00s
+2026-03-18 02:47:31,697 | INFO | [skip] #197 class1/spectral_statue | 197_class1_spectral_statue_001.png | time=0.00s
+2026-03-18 02:47:31,697 | INFO | [skip] #198 class1/rainbow_church | 198_class1_rainbow_church_001.png | time=0.00s
+2026-03-18 02:47:31,697 | INFO | [skip] #199 class1/neon_void | 199_class1_neon_void_001.png | time=0.00s
+2026-03-18 02:47:31,697 | INFO | [skip] #200 class1/dirty_portrait | 200_class1_dirty_portrait_001.png | time=0.00s
+2026-03-18 02:47:31,697 | INFO | [skip] #201 class1/crt_ghost | 201_class1_crt_ghost_001.png | time=0.00s
+2026-03-18 02:47:31,697 | INFO | [skip] #202 class1/infrared_ruin | 202_class1_infrared_ruin_001.png | time=0.00s
+2026-03-18 02:47:31,705 | INFO | [ok] #072 v3/10_deep_ultraviolet | 072_v3_10_deep_ultraviolet_001.png | 1242x2208 | 3.61 MB | time=1.12s
+2026-03-18 02:47:31,717 | INFO | [ok] #085 v3/26_oxidised_neon_tube | 085_v3_26_oxidised_neon_tube_001.png | 1242x2208 | 3.03 MB | time=1.06s
+2026-03-18 02:47:31,772 | INFO | [ok] #052 v2/25_barium_chloride | 052_v2_25_barium_chloride_001.png | 1242x2208 | 3.42 MB | time=1.25s
+2026-03-18 02:47:31,815 | INFO | [ok] #051 v2/24_wet_pavement | 051_v2_24_wet_pavement_001.png | 1242x2208 | 4.08 MB | time=1.32s
+2026-03-18 02:47:31,932 | INFO | [ok] #104 v4/08_tungsten_body | 104_v4_08_tungsten_body_001.png | 1242x2208 | 3.13 MB | time=1.09s
+2026-03-18 02:47:32,060 | INFO | [ok] #060 v2/35_nuclear_test | 060_v2_35_nuclear_test_001.png | 1242x2208 | 3.36 MB | time=1.53s
+2026-03-18 02:47:32,576 | INFO | [ok] #154 class1/clubbath_ccd | 154_class1_clubbath_ccd_001.png | 1242x2208 | 5.69 MB | time=1.60s
+2026-03-18 02:47:32,578 | INFO | [image-done] 5b369f9c-02fd-41ad-adc2-88f81ffe7075.jpg | ok=16 | skip=186 | fail=0 | bytes=56.69 MB | time=3.21s
+2026-03-18 02:47:32,579 | INFO | ========================================================================
+2026-03-18 02:47:32,579 | INFO | Run complete
+2026-03-18 02:47:32,579 | INFO | ========================================================================
+2026-03-18 02:47:32,579 | INFO | Images processed: 1
+2026-03-18 02:47:32,580 | INFO | Outputs created: 16
+2026-03-18 02:47:32,580 | INFO | Outputs skipped: 186
+2026-03-18 02:47:32,580 | INFO | Outputs failed: 0
+2026-03-18 02:47:32,580 | INFO | Bytes written: 56.69 MB
+2026-03-18 02:47:32,581 | INFO | Total time: 3.21s
+2026-03-18 02:47:32,581 | INFO | Average time per image: 3.21s
