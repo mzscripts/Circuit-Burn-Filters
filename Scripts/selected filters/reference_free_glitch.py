@@ -14,6 +14,10 @@ SUPPORTED_EXTENSIONS = (".jpg", ".jpeg", ".png", ".webp")
 PRESETS = [
     "spectral_statue",
     "rainbow_church",
+    "mystiq",
+    "halo_saint",
+    "eclipse_temple",
+    "sacred_orb",
     "toxic_thermal",
     "pastel_angel",
     "neon_void",
@@ -161,6 +165,100 @@ PRESET_ANCHORS = {
             (0, 255, 255),
             (255, 0, 255),
             (255, 255, 0),
+        ],
+    },
+    "mystiq": {
+        "sky": [
+            (0, 0, 255),
+            (0, 255, 255),
+            (0, 255, 0),
+            (255, 255, 0),
+            (255, 0, 0),
+            (255, 0, 255),
+        ],
+        "fg": [
+            (0, 0, 0),
+            (40, 0, 80),
+            (0, 100, 255),
+            (0, 255, 120),
+            (255, 0, 255),
+            (255, 255, 0),
+        ],
+        "global": [
+            (0, 0, 40),
+            (0, 80, 255),
+            (0, 255, 255),
+            (255, 0, 255),
+            (255, 255, 0),
+        ],
+    },
+    "halo_saint": {
+        "sky": [
+            (30, 0, 70),
+            (90, 0, 130),
+            (180, 40, 120),
+            (255, 120, 90),
+            (255, 210, 140),
+        ],
+        "fg": [
+            (0, 0, 10),
+            (0, 10, 40),
+            (0, 40, 90),
+            (20, 90, 180),
+            (120, 220, 255),
+        ],
+        "global": [
+            (5, 0, 20),
+            (20, 10, 70),
+            (80, 20, 130),
+            (0, 180, 255),
+            (180, 255, 255),
+        ],
+    },
+    "eclipse_temple": {
+        "sky": [
+            (0, 10, 40),
+            (0, 30, 90),
+            (10, 60, 140),
+            (80, 120, 200),
+            (220, 240, 255),
+        ],
+        "fg": [
+            (0, 0, 0),
+            (0, 10, 25),
+            (0, 35, 70),
+            (40, 120, 180),
+            (180, 240, 255),
+        ],
+        "global": [
+            (0, 0, 10),
+            (0, 20, 50),
+            (0, 60, 110),
+            (30, 140, 220),
+            (220, 245, 255),
+        ],
+    },
+    "sacred_orb": {
+        "sky": [
+            (0, 30, 40),
+            (20, 60, 80),
+            (70, 0, 90),
+            (140, 40, 140),
+            (220, 120, 80),
+        ],
+        "fg": [
+            (0, 5, 10),
+            (0, 20, 30),
+            (0, 60, 70),
+            (80, 180, 120),
+            (220, 255, 100),
+        ],
+        "global": [
+            (0, 10, 20),
+            (0, 40, 60),
+            (40, 0, 80),
+            (120, 180, 60),
+            (255, 240, 80),
         ],
     },
     "toxic_thermal": {
@@ -404,8 +502,10 @@ def estimate_subject_mask(arr, sky_mask):
 # REGION-AWARE POSTERIZATION
 # =========================================================
 def preset_poster_bits(preset_name):
-    if preset_name in ["rainbow_church", "toxic_thermal"]:
+    if preset_name in ["rainbow_church", "mystiq", "toxic_thermal"]:
         return (2, 3, 5)  # sky, subject, bg
+    elif preset_name in ["halo_saint", "eclipse_temple", "sacred_orb"]:
+        return (2, 3, 4)  # more graphic / poster-like
     elif preset_name in ["pastel_angel"]:
         return (4, 5, 6)
     elif preset_name in ["dirty_portrait", "crt_ghost"]:
@@ -541,12 +641,130 @@ def make_radial_halo_overlay(h, w, lut):
 # =========================================================
 def apply_preset_finishers(color, arr, sky_mask, subject_mask, preset_name):
     h, w, _ = color.shape
+    bg_mask = np.clip(1.0 - np.maximum(sky_mask, subject_mask), 0, 1)
 
-    if preset_name in ["rainbow_church", "spectral_statue", "neon_void"]:
+    # ---------------------------------------------------------
+    # RAINBOW / EXISTING SKY HERO FILTERS
+    # ---------------------------------------------------------
+    if preset_name == "rainbow_church":
+        sky_overlay = make_banded_sky_overlay_fixed(h, w, color_lut_for_overlay(preset_name))
+        alpha = sky_mask[:, :, None] * 0.18
+        color = clamp_u8(
+            color.astype(np.float32) * (1 - alpha) +
+            sky_overlay.astype(np.float32) * alpha
+        )
+
+    elif preset_name == "mystiq":
+        sky_overlay = make_mystiq_overlay(h, w, color_lut_for_overlay(preset_name))
+        alpha = sky_mask[:, :, None] * 0.34
+        color = clamp_u8(
+            color.astype(np.float32) * (1 - alpha) +
+            sky_overlay.astype(np.float32) * alpha
+        )
+
+    elif preset_name in ["spectral_statue", "neon_void"]:
         sky_overlay = make_banded_sky_overlay(h, w, color_lut_for_overlay(preset_name))
         alpha = sky_mask[:, :, None] * random.uniform(0.18, 0.45)
-        color = clamp_u8(color.astype(np.float32) * (1 - alpha) + sky_overlay.astype(np.float32) * alpha)
+        color = clamp_u8(
+            color.astype(np.float32) * (1 - alpha) +
+            sky_overlay.astype(np.float32) * alpha
+        )
 
+    # ---------------------------------------------------------
+    # NEW HERO DOME FILTERS
+    # ---------------------------------------------------------
+    if preset_name == "halo_saint":
+        overlay, disc_mask, dist = make_celestial_disc_overlay(
+            h, w,
+            dome_colors=[
+                (255, 220, 160),  # warm gold
+                (255, 180, 120),  # peach
+                (255, 130, 100),  # coral
+                (255, 230, 180),  # bright core band
+            ],
+            bg_colors=[
+                (25, 0, 55),      # deep violet
+                (90, 0, 90),      # magenta plum
+                (180, 40, 120),   # magenta
+                (255, 120, 90),   # warm upper transition
+            ],
+            cx=0.50, cy=0.22, radius=0.40, levels=4
+        )
+
+        alpha = sky_mask[:, :, None] * 0.55
+        color = clamp_u8(
+            color.astype(np.float32) * (1 - alpha) +
+            overlay.astype(np.float32) * alpha
+        )
+
+        color = darken_foreground_for_poster(color, subject_mask, bg_mask, amount=0.24, blue_lift=26)
+        color = apply_ground_reflection_tint(color, sky_mask, tint_rgb=(80, 255, 255), strength=0.18, banding=5)
+
+
+    elif preset_name == "sacred_orb":
+        overlay = make_vertical_column_sky_overlay(
+            h, w,
+            column_colors=[
+                (245, 220, 190),  # light outer
+                (220, 190, 150),  # warm beige
+                (205, 160, 120),  # darker warm band
+                (185, 135, 100),  # darkest center
+            ],
+            bg_colors=[
+                (45, 20, 80),     # deep violet
+                (65, 35, 105),    # purple
+                (85, 55, 130),    # muted plum
+                (105, 75, 150),   # lighter violet
+            ],
+            cx=0.50,
+            width=0.82,
+            levels=5
+        )
+
+        alpha = sky_mask[:, :, None] * 0.68
+        color = clamp_u8(
+            color.astype(np.float32) * (1 - alpha) +
+            overlay.astype(np.float32) * alpha
+        )
+
+        # keep foreground dark and clean
+        color = darken_foreground_for_poster(color, subject_mask, bg_mask, amount=0.24, blue_lift=8)
+
+        # NO reflection tint / NO lower glow
+
+    elif preset_name == "eclipse_temple":
+        overlay, disc_mask, dist = make_celestial_disc_overlay(
+            h, w,
+            dome_colors=[
+                (255, 255, 248),  # bright outer
+                (240, 242, 232),  # soft ivory
+                (215, 222, 232),  # cool inner band
+                (190, 205, 225),  # darker center
+            ],
+            bg_colors=[
+                (0, 8, 28),       # deep midnight
+                (0, 20, 55),      # indigo
+                (8, 40, 90),      # cool blue
+                (35, 80, 140),    # faint misty upper
+            ],
+            cx=0.50,
+            cy=0.52,     # move center lower so circle fills whole sky
+            radius=0.78, # much bigger = giant sky disc
+            levels=4
+        )
+
+        alpha = sky_mask[:, :, None] * 0.62
+        color = clamp_u8(
+            color.astype(np.float32) * (1 - alpha) +
+            overlay.astype(np.float32) * alpha
+        )
+
+        color = darken_foreground_for_poster(color, subject_mask, bg_mask, amount=0.20, blue_lift=22)
+        color = apply_ground_reflection_tint(color, sky_mask, tint_rgb=(90, 180, 255), strength=0.08, banding=3)
+
+    # ---------------------------------------------------------
+    # EXISTING PRESETS
+    # ---------------------------------------------------------
     if preset_name in ["pastel_angel", "infrared_ruin"]:
         aurora = make_diagonal_aurora_overlay(h, w, color_lut_for_overlay(preset_name))
         alpha = sky_mask[:, :, None] * random.uniform(0.12, 0.35)
@@ -584,6 +802,199 @@ def color_lut_for_overlay(preset_name):
     sky_lut, _, _ = build_preset_luts(preset_name)
     return sky_lut
 
+def make_banded_sky_overlay_fixed(h, w, lut):
+    yy, xx = np.mgrid[0:h, 0:w]
+
+    # subtle, stable rainbow sky
+    t = (yy / max(1, h - 1)) * 0.82 + 0.10 * np.sin(xx / max(1, w) * math.pi * 2.2)
+    t = np.clip(t, 0, 1)
+
+    levels = 5
+    t = np.floor(t * levels) / levels
+    gray = clamp_u8(t * 255)
+
+    return apply_lut_to_gray(gray, lut)
+
+
+def make_mystiq_overlay(h, w, lut):
+    yy, xx = np.mgrid[0:h, 0:w]
+
+    # dome / mystical arc feel
+    cx = w * 0.5
+    cy = h * 0.15
+
+    dx = (xx - cx) / max(1, w * 0.5)
+    dy = (yy - cy) / max(1, h * 0.9)
+
+    dist = np.sqrt(dx * dx + dy * dy)
+
+    # invert so center/top becomes stronger arc
+    t = 1.0 - np.clip(dist, 0, 1)
+
+    # quantize for graphic dome bands
+    levels = 4
+    t = np.floor(t * levels) / levels
+
+    # keep mostly upper sky
+    top_fade = np.clip(1.0 - (yy / max(1, h - 1)) * 1.15, 0, 1)
+    t = np.clip(t * top_fade + 0.15 * (yy / max(1, h - 1)), 0, 1)
+
+    gray = clamp_u8(t * 255)
+    return apply_lut_to_gray(gray, lut)
+
+
+def make_celestial_disc_overlay(h, w, dome_colors, bg_colors, cx=0.5, cy=0.22, radius=0.42, levels=4):
+    yy, xx = np.mgrid[0:h, 0:w]
+
+    x = (xx - w * cx) / max(1, w * radius)
+    y = (yy - h * cy) / max(1, h * radius)
+
+    dist = np.sqrt(x * x + y * y)
+    inside = (dist <= 1.0).astype(np.float32)
+
+    # disc bands (center brighter, banded outward)
+    t = 1.0 - np.clip(dist, 0, 1)
+    t = np.floor(t * levels) / max(1, levels)
+
+    # background vertical gradient
+    bg_t = np.clip(yy / max(1, h - 1), 0, 1)
+
+    dome_lut = make_lut_from_anchors(dome_colors)
+    bg_lut = make_lut_from_anchors(bg_colors)
+
+    dome_gray = clamp_u8(t * 255)
+    bg_gray = clamp_u8(bg_t * 255)
+
+    dome = apply_lut_to_gray(dome_gray, dome_lut).astype(np.float32)
+    bg = apply_lut_to_gray(bg_gray, bg_lut).astype(np.float32)
+
+    # composite disc over bg
+    out = bg * (1 - inside[:, :, None]) + dome * inside[:, :, None]
+    return clamp_u8(out), inside, dist
+
+
+def apply_ground_reflection_tint(color, sky_mask, tint_rgb=(0, 255, 255), strength=0.18, banding=5):
+    h, w, _ = color.shape
+    yy, xx = np.mgrid[0:h, 0:w]
+
+    bg_mask = np.clip(1.0 - sky_mask, 0, 1)
+
+    # stronger in lower half
+    vertical = np.clip((yy / max(1, h - 1) - 0.45) / 0.55, 0, 1)
+
+    # horizontal streaks
+    wave = 0.5 + 0.5 * np.sin(xx / max(1, w) * math.pi * 8.0)
+    wave = np.floor(wave * banding) / max(1, banding)
+
+    mask = (vertical * wave * bg_mask)
+    mask = box_blur_mask(mask, radius=2)
+
+    tint = np.zeros_like(color, dtype=np.float32)
+    tint[:, :, 0] = tint_rgb[0]
+    tint[:, :, 1] = tint_rgb[1]
+    tint[:, :, 2] = tint_rgb[2]
+
+    out = color.astype(np.float32) * (1 - mask[:, :, None] * strength) + tint * (mask[:, :, None] * strength)
+    return clamp_u8(out)
+
+
+def darken_foreground_for_poster(color, subject_mask, bg_mask, amount=0.22, blue_lift=20):
+    out = color.astype(np.float32)
+
+    # darken subject + non-sky background slightly
+    mask = np.clip(subject_mask * 0.8 + bg_mask * 0.35, 0, 1)
+
+    out[:, :, 0] *= (1.0 - amount * mask)
+    out[:, :, 1] *= (1.0 - amount * mask)
+    out[:, :, 2] *= (1.0 - amount * mask)
+
+    # subtle electric blue shadow lift
+    out[:, :, 2] = np.clip(out[:, :, 2] + mask * blue_lift, 0, 255)
+
+    return clamp_u8(out)
+
+def make_vertical_stripe_orb_overlay(h, w, dome_colors, bg_colors, cx=0.5, cy=0.22, radius=0.42, levels=5):
+    yy, xx = np.mgrid[0:h, 0:w]
+
+    # oval orb shape
+    rx = w * radius
+    ry = h * radius * 1.35
+
+    dx = (xx - w * cx) / max(1.0, rx)
+    dy = (yy - h * cy) / max(1.0, ry)
+
+    dist = np.sqrt(dx * dx + dy * dy)
+    inside = (dist <= 1.0).astype(np.float32)
+
+    # vertical stripes INSIDE the orb
+    orb_left = w * cx - rx
+    orb_right = w * cx + rx
+
+    stripe_t = (xx - orb_left) / max(1.0, (orb_right - orb_left))
+    stripe_t = np.clip(stripe_t, 0, 1)
+
+    # make center warmer / darker, edges lighter
+    stripe_t = np.abs(stripe_t - 0.5) * 2.0   # 0 at center, 1 at edges
+    stripe_t = 1.0 - stripe_t                 # 1 at center, 0 at edges
+
+    # quantize into flat vertical bands
+    stripe_t = np.floor(stripe_t * levels) / max(1, levels)
+
+    # outside sky background
+    bg_t = np.clip(yy / max(1, h - 1), 0, 1)
+
+    dome_lut = make_lut_from_anchors(dome_colors)
+    bg_lut = make_lut_from_anchors(bg_colors)
+
+    dome_gray = clamp_u8(stripe_t * 255)
+    bg_gray = clamp_u8(bg_t * 255)
+
+    dome = apply_lut_to_gray(dome_gray, dome_lut).astype(np.float32)
+    bg = apply_lut_to_gray(bg_gray, bg_lut).astype(np.float32)
+
+    out = bg * (1.0 - inside[:, :, None]) + dome * inside[:, :, None]
+
+    return clamp_u8(out), inside, dist
+
+
+def make_vertical_column_sky_overlay(h, w, column_colors, bg_colors, cx=0.5, width=0.82, levels=5):
+    yy, xx = np.mgrid[0:h, 0:w]
+
+    # full-height vertical column area
+    col_w = w * width
+    left = w * cx - col_w / 2.0
+    right = w * cx + col_w / 2.0
+
+    inside = ((xx >= left) & (xx <= right)).astype(np.float32)
+
+    # normalized x within column
+    t = (xx - left) / max(1.0, (right - left))
+    t = np.clip(t, 0, 1)
+
+    # DARK MIDDLE, LIGHT EDGES
+    # center -> dark, edges -> light
+    center_dist = np.abs(t - 0.5) * 2.0   # 0 center, 1 edges
+    band_t = center_dist                  # darker center, lighter edges
+
+    # quantize into vertical bands
+    band_t = np.floor(band_t * levels) / max(1, levels)
+
+    # background sky outside the columns
+    bg_t = np.clip(yy / max(1, h - 1), 0, 1)
+
+    col_lut = make_lut_from_anchors(column_colors)
+    bg_lut = make_lut_from_anchors(bg_colors)
+
+    col_gray = clamp_u8(band_t * 255)
+    bg_gray = clamp_u8(bg_t * 255)
+
+    cols = apply_lut_to_gray(col_gray, col_lut).astype(np.float32)
+    bg = apply_lut_to_gray(bg_gray, bg_lut).astype(np.float32)
+
+    out = bg * (1.0 - inside[:, :, None]) + cols * inside[:, :, None]
+
+    return clamp_u8(out)
+
 # =========================================================
 # MAIN PIPELINE
 # =========================================================
@@ -596,8 +1007,16 @@ def stylize_preset(target_img, preset_name):
     img = ImageEnhance.Color(img).enhance(random.uniform(1.0, 2.2))
     img = ImageEnhance.Sharpness(img).enhance(random.uniform(1.0, 2.4))
 
-    if preset_name in ["rainbow_church", "spectral_statue", "toxic_thermal"] and random.random() < 0.4:
+    if preset_name in ["spectral_statue", "toxic_thermal"] and random.random() < 0.4:
         img = ImageOps.solarize(img, threshold=random.randint(80, 180))
+
+    # rainbow_church = clean stable version (no solarize)
+    if preset_name == "rainbow_church":
+        pass
+
+    # mystiq = surreal version (always solarized)
+    if preset_name == "mystiq":
+        img = ImageOps.solarize(img, threshold=132)
 
     arr = np_img(img)
     h, w, _ = arr.shape
@@ -672,6 +1091,11 @@ def process_images():
             img = load_image(input_path)
 
             for i, preset_name in enumerate(PRESETS, start=1):
+                # Seed for deterministic results
+                seed = abs(hash((base_name, preset_name))) % (2**32)
+                random.seed(seed)
+                np.random.seed(seed)
+
                 out = stylize_preset(img, preset_name)
                 output_filename = f"{base_name}_{preset_name}_v{i}.png"
                 output_path = os.path.join(OUTPUT_FOLDER, output_filename)

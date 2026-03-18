@@ -68,8 +68,13 @@ def setup_logger(verbose: bool) -> logging.Logger:
     console_handler.setLevel(logging.DEBUG if verbose else logging.INFO)
     logger.addHandler(console_handler)
 
+    # Create run_logs directory if it doesn't exist
+    run_logs_dir = Path("run_logs")
+    run_logs_dir.mkdir(exist_ok=True)
+    
     log_name = f"circuit_burn_batch_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
-    file_handler = logging.FileHandler(log_name, encoding="utf-8")
+    log_path = run_logs_dir / log_name
+    file_handler = logging.FileHandler(log_path, encoding="utf-8")
     file_handler.setFormatter(formatter)
     file_handler.setLevel(logging.DEBUG)
     logger.addHandler(file_handler)

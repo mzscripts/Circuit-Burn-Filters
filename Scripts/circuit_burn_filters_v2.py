@@ -294,15 +294,27 @@ def crt_phosphor(src):
 
 # ---- 22 tritium_glow ----------------------------------------------------------
 def tritium_glow(src):
-    x = lum(a(src))/255.0
-    glow = np.power(np.clip(x,0,1),0.4)
-    r = np.clip(glow**1.5*180, 0,255)
-    g = np.clip(glow**0.4*255, 0,255)
-    b = np.clip(glow**4.0*50,  0,255)
-    base = np.stack([r,g,b],axis=2)
-    bloom = np.asarray(i(base).filter(ImageFilter.GaussianBlur(12)),dtype=np.float32)*0.5
-    return i(np.clip(base+bloom,0,255))
+    arr = a(src)
+    x = lum(arr) / 255.0
 
+    # keep depth
+    x = np.clip((x - 0.5) * 1.25 + 0.5, 0, 1)
+    glow = np.power(x, 0.55)
+
+    # tritium palette
+    r = np.clip(np.power(glow, 1.9) * 150, 0, 255)
+    g = np.clip(np.power(glow, 0.55) * 255, 0, 255)
+    b = np.clip(np.power(glow, 2.8) * 90, 0, 255)
+    base = np.stack([r, g, b], axis=2)
+
+    # selective glow mask (only brighter parts bloom)
+    mask = np.clip((x - 0.45) / 0.55, 0, 1) ** 1.6
+    soft = np.asarray(i(base).filter(ImageFilter.GaussianBlur(10)), dtype=np.float32)
+
+    bloom = soft * mask[..., None] * 0.22
+
+    out = np.clip(base + bloom, 0, 255)
+    return i(out)
 # ---- 23 rust_bloom ------------------------------------------------------------
 def rust_bloom(src):
     arr = a(src); x = lum(arr)/255.0
