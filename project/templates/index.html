@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Upload Image | Circuit Burn{% endblock %}
+{% block page_id %}index{% endblock %}
+{% block content %}
+<section class="hero">
+    <div class="hero-copy">
+        <p class="eyebrow">AI-style image filter studio</p>
+        <h1>Turn one image into a whole gallery of premium filter looks.</h1>
+        <p class="hero-text">
+            Upload once to ImgBB, browse a library of 180+ styles, and generate as many hosted variations as you want in the same session.
+        </p>
+        <div class="hero-stats">
+            <div class="stat-card">
+                <strong>186+</strong>
+                <span>Filters ready now</span>
+            </div>
+            <div class="stat-card">
+                <strong>Batch</strong>
+                <span>Generate several at once</span>
+            </div>
+            <div class="stat-card">
+                <strong>Session</strong>
+                <span>Keep one source image active</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="upload-panel">
+        <form class="upload-card" action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data" id="upload-form">
+            <div class="card-head">
+                <h2>Start with one image</h2>
+                <p>JPG, PNG, or WEBP up to 15MB.</p>
+            </div>
+
+            {% if error %}
+            <div class="inline-alert error">{{ error }}</div>
+            {% endif %}
+
+            <label class="dropzone" id="dropzone">
+                <input type="file" name="image" id="image-input" accept=".jpg,.jpeg,.png,.webp" required>
+                <span class="dropzone-badge">Drag and drop</span>
+                <strong>Drop your image here</strong>
+                <p>or click to browse from your device</p>
+            </label>
+
+            <div class="preview-card hidden" id="preview-card">
+                <img id="preview-image" alt="Selected preview">
+                <div>
+                    <strong id="preview-name"></strong>
+                    <p id="preview-meta">Ready to upload</p>
+                </div>
+            </div>
+
+            <button class="primary-button" type="submit" id="upload-button">
+                <span class="button-label">Upload and choose filters</span>
+                <span class="button-spinner hidden"></span>
+            </button>
+        </form>
+    </div>
+</section>
+{% endblock %}

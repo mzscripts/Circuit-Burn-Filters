@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block title %}Choose Filters | Circuit Burn{% endblock %}
+{% block page_id %}filters{% endblock %}
+{% block content %}
+<section class="workspace-header">
+    <div>
+        <p class="eyebrow">Current source image</p>
+        <h1>Choose Filters</h1>
+        <p class="hero-text">Browse {{ total_filters }} hosted filters, open any filter in its own processing page, or batch-generate the visible selection.</p>
+    </div>
+    <div class="workspace-actions">
+        <a class="ghost-button" href="{{ url_for('results_page') }}">View Results</a>
+        <button class="ghost-button" type="button" data-reset-session>Start Over</button>
+    </div>
+</section>
+
+<section class="workspace-grid">
+    <aside class="preview-panel">
+        <div class="source-card">
+            <img src="{{ uploaded_image.display_url }}" alt="Uploaded image preview">
+            <div class="source-meta">
+                <strong>{{ uploaded_image.original_name }}</strong>
+                <span>Stored on ImgBB for this active session</span>
+            </div>
+        </div>
+        <div class="search-panel">
+            <label for="filter-search">Search filters</label>
+            <input id="filter-search" type="search" placeholder="Search by name, category, or mood">
+            <div class="inline-actions">
+                <button class="ghost-button small" type="button" id="select-visible-button">Select All Visible</button>
+                <button class="ghost-button small" type="button" id="clear-selection-button">Clear All</button>
+            </div>
+        </div>
+    </aside>
+
+    <div class="filters-panel">
+        {% for group, filters in grouped_filters.items() %}
+        <section class="category-block" data-category="{{ group|lower }}">
+            <div class="category-head">
+                <h2>{{ group }}</h2>
+                <span>{{ filters|length }} filters</span>
+            </div>
+            <div class="filters-grid">
+                {% for filter in filters %}
+                <article class="filter-card" data-filter-card data-search="{{ (filter.sequence_number ~ ' ' ~ filter.display_name ~ ' ' ~ filter.category ~ ' ' ~ filter.description)|lower }}">
+                    <div class="filter-card-top">
+                        <label class="check-pill">
+                            <input type="checkbox" class="batch-checkbox" value="{{ filter.id }}">
+                            <span>Select</span>
+                        </label>
+                        <span class="tag">#{{ "%03d"|format(filter.sequence_number) }}</span>
+                    </div>
+                    <div class="filter-preview">
+                        {% if filter.thumbnail_url %}
+                        <img class="filter-thumbnail" src="{{ filter.thumbnail_url }}" alt="{{ filter.display_name }} thumbnail" loading="lazy" referrerpolicy="no-referrer">
+                        {% else %}
+                        <div class="preview-gradient"></div>
+                        <div class="preview-label">{{ filter.display_name[:2] }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="filter-copy">
+                        <h3>{{ filter.display_name }}</h3>
+                        <div class="filter-subline">{{ filter.category }}</div>
+                    </div>
+                    <a class="secondary-button compact-button" href="{{ url_for('process_page', filter_id=filter.id) }}">Open</a>
+                </article>
+                {% endfor %}
+            </div>
+        </section>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="results-strip">
+    <div class="section-head">
+        <div>
+            <p class="eyebrow">Live session output</p>
+            <h2>Generated Results</h2>
+        </div>
+        <a class="ghost-button" href="{{ url_for('results_page') }}">Open Full Gallery</a>
+    </div>
+    <div class="mini-results-grid" id="recent-results-grid">
+        {% for result in generated_results %}
+        <article class="result-card">
+            <img src="{{ result.display_url or result.image_url }}" alt="{{ result.filter_name }}">
+            <div class="result-meta">
+                <strong>{{ result.filter_name }}</strong>
+                <a href="{{ url_for('process_page', filter_id=result.filter_id) }}">Open</a>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+
+<div class="sticky-action-bar">
+    <div>
+        <strong id="selected-count">0 selected</strong>
+        <span>Generate multiple filters on the same uploaded image.</span>
+    </div>
+    <div class="sticky-actions">
+        <button class="ghost-button" type="button" onclick="window.location.href='{{ url_for('results_page') }}'">View Results</button>
+        <button class="primary-button" type="button" id="generate-selected-button">
+            <span class="button-label">Generate Selected</span>
+            <span class="button-spinner hidden"></span>
+        </button>
+    </div>
+</div>
+{% endblock %}

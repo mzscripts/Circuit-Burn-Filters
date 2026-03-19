@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Circuit Burn Filters{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body data-page="{% block page_id %}base{% endblock %}">
+    <div class="page-shell">
+        <header class="site-header">
+            <a class="brand" href="{{ url_for('index') }}">
+                <span class="brand-mark"></span>
+                <span>Circuit Burn</span>
+            </a>
+            <nav class="site-nav">
+                <a href="{{ url_for('index') }}">Upload</a>
+                <a href="{{ url_for('filters_page') }}">Filters</a>
+                <a href="{{ url_for('results_page') }}">Results</a>
+            </nav>
+        </header>
+        <main>
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+
+    <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+    <script>
+        window.APP_CONFIG = {
+            applyMultipleUrl: "{{ url_for('apply_multiple') }}",
+            resultsUrl: "{{ url_for('results_page') }}",
+            filtersUrl: "{{ url_for('filters_page') }}",
+            resetSessionUrl: "{{ url_for('reset_session') }}",
+            processApiBase: "/api/process/"
+        };
+    </script>
+    <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Results Gallery | Circuit Burn{% endblock %}
+{% block page_id %}results{% endblock %}
+{% block content %}
+<section class="workspace-header">
+    <div>
+        <p class="eyebrow">Results gallery</p>
+        <h1>Your generated images</h1>
+        <p class="hero-text">Compare the original with every generated output from the current session.</p>
+    </div>
+    <div class="workspace-actions">
+        <a class="ghost-button" href="{{ url_for('filters_page') }}">Apply More Filters</a>
+    </div>
+</section>
+
+<section class="gallery-layout">
+    <aside class="original-panel">
+        <h2>Original</h2>
+        <div class="source-card">
+            <img src="{{ uploaded_image.display_url }}" alt="Original uploaded image">
+            <div class="source-meta">
+                <strong>{{ uploaded_image.original_name }}</strong>
+                <span>Base image hosted on ImgBB</span>
+            </div>
+        </div>
+    </aside>
+
+    <section class="results-gallery">
+        <div class="section-head">
+            <h2>Generated</h2>
+            <span>{{ generated_results|length }} outputs</span>
+        </div>
+
+        {% if generated_results %}
+        <div class="results-gallery-grid">
+            {% for result in generated_results %}
+            <article class="gallery-card">
+                <img src="{{ result.display_url or result.image_url }}" alt="{{ result.filter_name }}">
+                <div class="gallery-copy">
+                    <strong>{{ result.filter_name }}</strong>
+                    <div class="gallery-actions">
+                        <a class="ghost-button small" href="{{ result.image_url }}" target="_blank" rel="noopener">Open Image</a>
+                        <a class="ghost-button small" href="{{ url_for('process_page', filter_id=result.filter_id) }}">Process Again</a>
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <h3>No outputs yet</h3>
+            <p>Head back to the filter browser to generate your first look.</p>
+            <a class="primary-button" href="{{ url_for('filters_page') }}">Choose Filters</a>
+        </div>
+        {% endif %}
+    </section>
+</section>
+{% endblock %}

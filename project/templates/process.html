@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Process {{ filter_data.display_name }} | Circuit Burn{% endblock %}
+{% block page_id %}process{% endblock %}
+{% block content %}
+<section class="workspace-header">
+    <div>
+        <p class="eyebrow">Process Filter</p>
+        <h1>{{ filter_data.display_name }}</h1>
+        <p class="hero-text">{{ filter_data.category }} filter in the Class 1 Filters library. Process in-memory, upload output to ImgBB, and compare before and after.</p>
+    </div>
+    <div class="workspace-actions">
+        <a class="ghost-button" href="{{ url_for('filters_page') }}">Back to Filters</a>
+        <a class="ghost-button" href="{{ url_for('results_page') }}">View Results</a>
+    </div>
+</section>
+
+<section class="process-layout" data-process-page data-filter-id="{{ filter_data.id }}">
+    <aside class="process-side">
+        <div class="source-card">
+            <img src="{{ uploaded_image.display_url }}" alt="Original uploaded image">
+            <div class="source-meta">
+                <strong>{{ uploaded_image.original_name }}</strong>
+                <span>Original</span>
+            </div>
+        </div>
+        <div class="source-card process-info-card">
+            <div class="process-number">#{{ "%03d"|format(filter_data.sequence_number) }}</div>
+            <strong>{{ filter_data.display_name }}</strong>
+            <span>{{ filter_data.category }}</span>
+            <button class="primary-button" type="button" id="process-button">
+                <span class="button-label">{% if existing_result %}Regenerate{% else %}Process Filter{% endif %}</span>
+                <span class="button-spinner hidden"></span>
+            </button>
+            <div class="process-status" id="process-status">{% if existing_result %}Ready with a previous result.{% else %}Waiting to process.{% endif %}</div>
+        </div>
+    </aside>
+
+    <section class="process-main">
+        <div class="comparison-card">
+            <div class="comparison-header">
+                <h2>Before / After</h2>
+                <span id="comparison-label">{% if existing_result %}Latest output loaded{% else %}Process to preview output{% endif %}</span>
+            </div>
+            <div class="comparison-stage" id="comparison-stage" data-has-result="{{ 'true' if existing_result else 'false' }}">
+                <img class="comparison-base" src="{{ uploaded_image.display_url }}" alt="Original image">
+                <div class="comparison-overlay-wrap" id="comparison-overlay-wrap" style="{% if not existing_result %}display:none;{% endif %}">
+                    <img class="comparison-overlay" id="comparison-overlay" src="{{ existing_result.display_url if existing_result else '' }}" alt="Processed image">
+                </div>
+                <input class="comparison-slider" id="comparison-slider" type="range" min="0" max="100" value="50" {% if not existing_result %}disabled{% endif %}>
+            </div>
+        </div>
+
+        <div class="process-output-card">
+            <div class="section-head">
+                <div>
+                    <p class="eyebrow">Generated output</p>
+                    <h2>Hosted Result</h2>
+                </div>
+                <a class="ghost-button small {% if not existing_result %}hidden{% endif %}" id="output-link" href="{{ existing_result.image_url if existing_result else '#' }}" target="_blank" rel="noopener">Open on ImgBB</a>
+            </div>
+            <div class="process-output-state" id="process-output-state">
+                {% if existing_result %}
+                <img id="process-output-image" src="{{ existing_result.display_url }}" alt="{{ filter_data.display_name }}">
+                {% else %}
+                <div class="empty-state compact">
+                    <h3>No generated image yet</h3>
+                    <p>Run this filter to create and upload the result.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+</section>
+{% endblock %}
