@@ -1,12 +1,11 @@
 from __future__ import annotations
 
 import base64
-from io import BytesIO
 
 import requests
 from PIL import Image
 
-from utils.image_io import load_image_from_bytes
+from utils.image_io import load_image_from_stream
 from utils.validation import ValidationError
 
 
@@ -26,7 +25,7 @@ def upload_image_bytes(*, image_bytes: bytes, api_key: str, upload_url: str, nam
     response.raise_for_status()
     data = response.json()
     if not data.get("success"):
-        raise ValidationError("ImgBB rejected the image upload.")
+        raise ValidationError("Rejected the image upload.")
     image_data = data["data"]
     return {
         "url": image_data["url"],
@@ -38,11 +37,14 @@ def upload_image_bytes(*, image_bytes: bytes, api_key: str, upload_url: str, nam
     }
 
 
+def fetch_remote_image(url: str) -> Image.Image:
+    with requests.get(url, stream=True, timeout=60) as response:
+        response.raise_for_status()
+        response.raw.decode_content = True
+        return load_image_from_stream(response.raw)
+
+
 def fetch_remote_image_bytes(url: str) -> bytes:
     response = requests.get(url, timeout=60)
     response.raise_for_status()
     return response.content
-
-
-def fetch_remote_image(url: str) -> Image.Image:
-    return load_image_from_bytes(fetch_remote_image_bytes(url))

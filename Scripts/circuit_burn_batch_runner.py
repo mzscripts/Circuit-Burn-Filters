@@ -299,7 +299,7 @@ def run_batch(
 
     job_count = len(build_jobs(1, output_folder))
     logger.info("=" * 72)
-    logger.info("Circuit Burn Batch Runner")
+    logger.info("Circuit Bend Batch Runner")
     logger.info("=" * 72)
     logger.info("Input folder: %s", input_folder.resolve())
     logger.info("Output folder: %s", output_folder.resolve())

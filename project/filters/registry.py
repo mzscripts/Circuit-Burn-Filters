@@ -123,7 +123,7 @@ def _sequence_for(pack_key: str, filter_id: str) -> int | None:
 
 def _wrap_legacy_filter(function: Callable) -> FilterCallable:
     def runner(image: Image.Image):
-        result = function(image.copy())
+        result = function(image)
         return ensure_pil_image(result)
 
     return runner
@@ -203,4 +203,4 @@ def get_all_filters() -> list[dict]:
 
 def get_filters_grouped_by_category() -> dict[str, list[dict]]:
     all_filters = get_all_filters()
-    return {"Class 1 Filters": all_filters}
+    return {"": all_filters}

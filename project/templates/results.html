@@ -16,13 +16,12 @@
 <section class="results-gallery solo-gallery">
     <div class="section-head">
         <h2>Generated</h2>
-        <span>{{ generated_results|length }} outputs</span>
+        <span id="results-count">{{ generated_results|length }} outputs</span>
     </div>
 
-    {% if generated_results %}
-    <div class="results-gallery-grid">
+    <div class="results-gallery-grid" id="results-gallery-grid" data-empty="{{ 'true' if not generated_results else 'false' }}">
         {% for result in generated_results %}
-        <article class="gallery-card dynamic-image-card">
+        <article class="gallery-card dynamic-image-card" data-result-card data-filter-id="{{ result.filter_id }}">
             <div class="image-frame image-loading" data-image-frame>
                 <div class="image-progress" data-image-progress>0%</div>
                 <img class="deferred-image" data-src="{{ result.image_url }}" alt="{{ result.filter_name }}">
@@ -33,18 +32,15 @@
                 <span>{{ result.generation_time_label }}</span>
                 <div class="result-actions">
                     <a class="ghost-button small" href="{{ url_for('download_result', filter_id=result.filter_id) }}">Download</a>
-                    <button class="ghost-button small copy-link-button" type="button" data-copy-link="{{ result.image_url }}">Copy Link</button>
                 </div>
             </div>
         </article>
         {% endfor %}
     </div>
-    {% else %}
-    <div class="empty-state">
+    <div class="empty-state{% if generated_results %} hidden{% endif %}" id="results-empty-state">
         <h3>No outputs yet</h3>
         <p>Head back to the filter browser to generate your first look.</p>
         <a class="primary-button" href="{{ url_for('filters_page') }}">Choose Filters</a>
     </div>
-    {% endif %}
 </section>
 {% endblock %}
