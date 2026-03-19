@@ -95,10 +95,15 @@ function prependRecentResult(result) {
     const card = document.createElement("article");
     card.className = "result-card";
     card.innerHTML = `
-        <img src="${result.display_url || result.image_url}" alt="${result.filter_name}">
-        <div class="result-meta">
+        <img src="${result.image_url}" alt="${result.filter_name}">
+        <div class="result-meta compact-meta">
             <strong>${result.filter_name}</strong>
-            <a href="/process/${result.filter_id}">Open</a>
+            <span>${result.file_size_label}</span>
+            <span>${result.generation_time_label}</span>
+            <div class="result-actions">
+                <a class="ghost-button small" href="${result.image_url}" download>Download</a>
+                <button class="ghost-button small copy-link-button" type="button" data-copy-link="${result.image_url}">Copy Link</button>
+            </div>
         </div>
     `;
     grid.prepend(card);
@@ -212,43 +217,35 @@ function initFilterActions() {
     }
 }
 
-function updateComparisonSlider(value) {
-    const overlayWrap = document.getElementById("comparison-overlay-wrap");
-    if (!overlayWrap) return;
-    overlayWrap.style.width = `${value}%`;
+async function copyToClipboard(text) {
+    await navigator.clipboard.writeText(text);
 }
 
 function renderProcessResult(result) {
     const outputState = document.getElementById("process-output-state");
-    const outputLink = document.getElementById("output-link");
-    const overlayWrap = document.getElementById("comparison-overlay-wrap");
-    const comparisonOverlay = document.getElementById("comparison-overlay");
-    const comparisonSlider = document.getElementById("comparison-slider");
-    const comparisonLabel = document.getElementById("comparison-label");
-
-    outputState.innerHTML = `<img id="process-output-image" src="${result.display_url || result.image_url}" alt="${result.filter_name}">`;
-    outputLink.href = result.image_url;
-    outputLink.classList.remove("hidden");
-    overlayWrap.style.display = "";
-    comparisonOverlay.src = result.display_url || result.image_url;
-    comparisonSlider.disabled = false;
-    comparisonLabel.textContent = "Latest output loaded";
-    updateComparisonSlider(comparisonSlider.value);
+    outputState.innerHTML = `
+        <article class="result-card process-result-card">
+            <img id="process-output-image" src="${result.image_url}" alt="${result.filter_name}">
+            <div class="result-meta compact-meta">
+                <strong>${result.filter_name}</strong>
+                <span>${result.file_size_label}</span>
+                <span>${result.generation_time_label}</span>
+                <div class="result-actions">
+                    <a class="ghost-button small" href="${result.image_url}" download>Download</a>
+                    <button class="ghost-button small copy-link-button" type="button" data-copy-link="${result.image_url}">Copy Link</button>
+                </div>
+            </div>
+        </article>
+    `;
 }
 
 function initProcessPage() {
     const container = document.querySelector("[data-process-page]");
     const button = document.getElementById("process-button");
     const status = document.getElementById("process-status");
-    const slider = document.getElementById("comparison-slider");
     if (!container || !button || !status) return;
 
     const filterId = container.dataset.filterId;
-
-    slider?.addEventListener("input", () => {
-        updateComparisonSlider(slider.value);
-    });
-    if (slider) updateComparisonSlider(slider.value);
 
     const runProcess = async () => {
         try {
@@ -268,9 +265,22 @@ function initProcessPage() {
 
     button.addEventListener("click", runProcess);
 
-    if (container.dataset.autoProcess !== "false" && document.getElementById("comparison-stage")?.dataset.hasResult !== "true") {
+    if (container.dataset.autoProcess !== "false" && !document.getElementById("process-output-image")) {
         runProcess();
     }
+}
+
+function initCopyLinkButtons() {
+    document.addEventListener("click", async (event) => {
+        const button = event.target.closest(".copy-link-button");
+        if (!button) return;
+        try {
+            await copyToClipboard(button.dataset.copyLink);
+            showToast("Link copied.");
+        } catch (error) {
+            showToast("Could not copy the link.", "error");
+        }
+    });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -278,4 +288,5 @@ document.addEventListener("DOMContentLoaded", () => {
     initFilterSearch();
     initFilterActions();
     initProcessPage();
+    initCopyLinkButtons();
 });

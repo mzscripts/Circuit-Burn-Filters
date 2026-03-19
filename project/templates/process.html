@@ -6,7 +6,7 @@
     <div>
         <p class="eyebrow">Process Filter</p>
         <h1>{{ filter_data.display_name }}</h1>
-        <p class="hero-text">{{ filter_data.category }} filter in the Class 1 Filters library. Process in-memory, upload output to ImgBB, and compare before and after.</p>
+        <p class="hero-text">{{ filter_data.category }} filter in the Class 1 Filters library. Process in-memory and upload the final output in full quality.</p>
     </div>
     <div class="workspace-actions">
         <a class="ghost-button" href="{{ url_for('filters_page') }}">Back to Filters</a>
@@ -36,35 +36,31 @@
     </aside>
 
     <section class="process-main">
-        <div class="comparison-card">
-            <div class="comparison-header">
-                <h2>Before / After</h2>
-                <span id="comparison-label">{% if existing_result %}Latest output loaded{% else %}Process to preview output{% endif %}</span>
-            </div>
-            <div class="comparison-stage" id="comparison-stage" data-has-result="{{ 'true' if existing_result else 'false' }}">
-                <img class="comparison-base" src="{{ uploaded_image.display_url }}" alt="Original image">
-                <div class="comparison-overlay-wrap" id="comparison-overlay-wrap" style="{% if not existing_result %}display:none;{% endif %}">
-                    <img class="comparison-overlay" id="comparison-overlay" src="{{ existing_result.display_url if existing_result else '' }}" alt="Processed image">
-                </div>
-                <input class="comparison-slider" id="comparison-slider" type="range" min="0" max="100" value="50" {% if not existing_result %}disabled{% endif %}>
-            </div>
-        </div>
-
         <div class="process-output-card">
             <div class="section-head">
                 <div>
                     <p class="eyebrow">Generated output</p>
-                    <h2>Hosted Result</h2>
+                    <h2>Result Card</h2>
                 </div>
-                <a class="ghost-button small {% if not existing_result %}hidden{% endif %}" id="output-link" href="{{ existing_result.image_url if existing_result else '#' }}" target="_blank" rel="noopener">Open on ImgBB</a>
             </div>
             <div class="process-output-state" id="process-output-state">
                 {% if existing_result %}
-                <img id="process-output-image" src="{{ existing_result.display_url }}" alt="{{ filter_data.display_name }}">
+                <article class="result-card process-result-card">
+                    <img id="process-output-image" src="{{ existing_result.image_url }}" alt="{{ filter_data.display_name }}">
+                    <div class="result-meta compact-meta">
+                        <strong>{{ filter_data.display_name }}</strong>
+                        <span>{{ existing_result.file_size_label }}</span>
+                        <span>{{ existing_result.generation_time_label }}</span>
+                        <div class="result-actions">
+                            <a class="ghost-button small" href="{{ existing_result.image_url }}" download>Download</a>
+                            <button class="ghost-button small copy-link-button" type="button" data-copy-link="{{ existing_result.image_url }}">Copy Link</button>
+                        </div>
+                    </div>
+                </article>
                 {% else %}
                 <div class="empty-state compact">
                     <h3>No generated image yet</h3>
-                    <p>Run this filter to create and upload the result.</p>
+                    <p>Run this filter to create a full-quality generated image card.</p>
                 </div>
                 {% endif %}
             </div>

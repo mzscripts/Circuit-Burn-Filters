@@ -82,10 +82,15 @@
     <div class="mini-results-grid" id="recent-results-grid">
         {% for result in generated_results %}
         <article class="result-card">
-            <img src="{{ result.display_url or result.image_url }}" alt="{{ result.filter_name }}">
-            <div class="result-meta">
+            <img src="{{ result.image_url }}" alt="{{ result.filter_name }}">
+            <div class="result-meta compact-meta">
                 <strong>{{ result.filter_name }}</strong>
-                <a href="{{ url_for('process_page', filter_id=result.filter_id) }}">Open</a>
+                <span>{{ result.file_size_label }}</span>
+                <span>{{ result.generation_time_label }}</span>
+                <div class="result-actions">
+                    <a class="ghost-button small" href="{{ result.image_url }}" download>Download</a>
+                    <button class="ghost-button small copy-link-button" type="button" data-copy-link="{{ result.image_url }}">Copy Link</button>
+                </div>
             </div>
         </article>
         {% endfor %}

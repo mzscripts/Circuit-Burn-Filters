@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from io import BytesIO
+import time
 
 from flask import Flask, jsonify, redirect, render_template, request, session, url_for
 from werkzeug.exceptions import RequestEntityTooLarge
@@ -63,6 +63,22 @@ def upsert_result(result: dict) -> None:
     save_results(results)
 
 
+def format_file_size(size_bytes: int) -> str:
+    size = float(size_bytes)
+    units = ["B", "KB", "MB", "GB"]
+    unit_index = 0
+    while size >= 1024 and unit_index < len(units) - 1:
+        size /= 1024
+        unit_index += 1
+    return f"{size:.2f} {units[unit_index]}"
+
+
+def format_generation_time(seconds: float) -> str:
+    if seconds < 1:
+        return f"{seconds * 1000:.0f} ms"
+    return f"{seconds:.2f} s"
+
+
 def process_filter(filter_id: str) -> dict:
     metadata = get_filter(filter_id)
     if metadata is None:
@@ -72,9 +88,11 @@ def process_filter(filter_id: str) -> dict:
     if not upload:
         raise ValidationError("Upload an image before applying filters.")
 
+    started = time.perf_counter()
     original_image = fetch_remote_image(upload["image_url"])
     output_image = metadata.function(original_image.copy())
     output_bytes = image_to_png_bytes(output_image)
+    elapsed = time.perf_counter() - started
     uploaded_output = upload_image_bytes(
         image_bytes=output_bytes,
         api_key=app.config["IMGBB_API_KEY"],
@@ -88,8 +106,10 @@ def process_filter(filter_id: str) -> dict:
         "category": metadata.category,
         "sequence_number": metadata.sequence_number,
         "image_url": uploaded_output["url"],
-        "display_url": uploaded_output["display_url"],
-        "delete_url": uploaded_output.get("delete_url"),
+        "file_size_bytes": len(output_bytes),
+        "file_size_label": format_file_size(len(output_bytes)),
+        "generation_time_seconds": round(elapsed, 3),
+        "generation_time_label": format_generation_time(elapsed),
     }
     upsert_result(result)
     return result
