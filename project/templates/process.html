@@ -46,13 +46,16 @@
             <div class="process-output-state" id="process-output-state">
                 {% if existing_result %}
                 <article class="result-card process-result-card">
-                    <img id="process-output-image" src="{{ existing_result.image_url }}" alt="{{ filter_data.display_name }}">
+                    <div class="image-frame image-loading process-image-frame" data-image-frame>
+                        <div class="image-progress" data-image-progress>0%</div>
+                        <img id="process-output-image" class="deferred-image" data-src="{{ existing_result.image_url }}" alt="{{ filter_data.display_name }}">
+                    </div>
                     <div class="result-meta compact-meta">
                         <strong>{{ filter_data.display_name }}</strong>
                         <span>{{ existing_result.file_size_label }}</span>
                         <span>{{ existing_result.generation_time_label }}</span>
                         <div class="result-actions">
-                            <a class="ghost-button small" href="{{ existing_result.image_url }}" download>Download</a>
+                            <a class="ghost-button small" href="{{ url_for('download_result', filter_id=filter_data.id) }}">Download</a>
                             <button class="ghost-button small copy-link-button" type="button" data-copy-link="{{ existing_result.image_url }}">Copy Link</button>
                         </div>
                     </div>

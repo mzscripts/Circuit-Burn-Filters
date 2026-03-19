@@ -1,8 +1,10 @@
 from __future__ import annotations
 
+import io
+import os
 import time
 
-from flask import Flask, jsonify, redirect, render_template, request, session, url_for
+from flask import Flask, jsonify, redirect, render_template, request, session, url_for, send_file
 from werkzeug.exceptions import RequestEntityTooLarge
 from werkzeug.utils import secure_filename
 
@@ -77,6 +79,12 @@ def format_generation_time(seconds: float) -> str:
     if seconds < 1:
         return f"{seconds * 1000:.0f} ms"
     return f"{seconds:.2f} s"
+
+
+def safe_download_name(result: dict) -> str:
+    extension = os.path.splitext(result.get("image_url", ""))[1] or ".png"
+    base = result["filter_name"].lower().replace(" ", "_")
+    return f"{base}{extension}"
 
 
 def process_filter(filter_id: str) -> dict:
@@ -202,6 +210,22 @@ def process_api(filter_id: str):
         return json_error(str(exc), 400)
     except Exception as exc:
         return json_error(f"Failed to process '{filter_id}': {exc}", 500)
+
+
+@app.get("/download/<filter_id>")
+def download_result(filter_id: str):
+    result = get_result_by_filter(filter_id)
+    if result is None:
+        return redirect(url_for("results_page"))
+
+    image = fetch_remote_image(result["image_url"])
+    payload = image_to_png_bytes(image)
+    return send_file(
+        io.BytesIO(payload),
+        mimetype="image/png",
+        as_attachment=True,
+        download_name=safe_download_name(result),
+    )
 
 
 @app.post("/apply-multiple")

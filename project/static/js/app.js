@@ -93,20 +93,24 @@ function prependRecentResult(result) {
     const grid = document.getElementById("recent-results-grid");
     if (!grid) return;
     const card = document.createElement("article");
-    card.className = "result-card";
+    card.className = "result-card dynamic-image-card";
     card.innerHTML = `
-        <img src="${result.image_url}" alt="${result.filter_name}">
+        <div class="image-frame image-loading" data-image-frame>
+            <div class="image-progress" data-image-progress>0%</div>
+            <img class="deferred-image" data-src="${result.image_url}" alt="${result.filter_name}">
+        </div>
         <div class="result-meta compact-meta">
             <strong>${result.filter_name}</strong>
             <span>${result.file_size_label}</span>
             <span>${result.generation_time_label}</span>
             <div class="result-actions">
-                <a class="ghost-button small" href="${result.image_url}" download>Download</a>
+                <a class="ghost-button small" href="/download/${result.filter_id}">Download</a>
                 <button class="ghost-button small copy-link-button" type="button" data-copy-link="${result.image_url}">Copy Link</button>
             </div>
         </div>
     `;
     grid.prepend(card);
+    initDeferredImages(card);
 }
 
 async function postJson(url, payload) {
@@ -186,9 +190,11 @@ function initFilterActions() {
 
             try {
                 setButtonLoading(batchButton, true);
+                updateBatchProgress(batchButton, 0, filterIds.length);
                 const data = await postJson(appConfig.applyMultipleUrl, { filter_ids: filterIds });
                 let successCount = 0;
-                data.results.forEach((item) => {
+                data.results.forEach((item, index) => {
+                    updateBatchProgress(batchButton, index + 1, filterIds.length);
                     if (item.success) {
                         successCount += 1;
                         prependRecentResult(item);
@@ -200,6 +206,7 @@ function initFilterActions() {
             } catch (error) {
                 showToast(error.message, "error");
             } finally {
+                updateBatchProgress(batchButton, 0, 0);
                 setButtonLoading(batchButton, false);
             }
         });
@@ -225,18 +232,22 @@ function renderProcessResult(result) {
     const outputState = document.getElementById("process-output-state");
     outputState.innerHTML = `
         <article class="result-card process-result-card">
-            <img id="process-output-image" src="${result.image_url}" alt="${result.filter_name}">
+            <div class="image-frame image-loading process-image-frame" data-image-frame>
+                <div class="image-progress" data-image-progress>0%</div>
+                <img id="process-output-image" class="deferred-image" data-src="${result.image_url}" alt="${result.filter_name}">
+            </div>
             <div class="result-meta compact-meta">
                 <strong>${result.filter_name}</strong>
                 <span>${result.file_size_label}</span>
                 <span>${result.generation_time_label}</span>
                 <div class="result-actions">
-                    <a class="ghost-button small" href="${result.image_url}" download>Download</a>
+                    <a class="ghost-button small" href="/download/${result.filter_id}">Download</a>
                     <button class="ghost-button small copy-link-button" type="button" data-copy-link="${result.image_url}">Copy Link</button>
                 </div>
             </div>
         </article>
     `;
+    initDeferredImages(outputState);
 }
 
 function initProcessPage() {
@@ -283,10 +294,82 @@ function initCopyLinkButtons() {
     });
 }
 
+function updateBatchProgress(button, completed, total) {
+    const label = button?.querySelector(".button-label");
+    if (!label) return;
+    label.textContent = total ? `Generating ${completed}/${total}` : "Generate Selected";
+}
+
+function applyOrientationClass(image, frame) {
+    frame.classList.remove("is-landscape", "is-portrait", "is-square");
+    const width = image.naturalWidth || 1;
+    const height = image.naturalHeight || 1;
+    if (width > height * 1.15) {
+        frame.classList.add("is-landscape");
+    } else if (height > width * 1.15) {
+        frame.classList.add("is-portrait");
+    } else {
+        frame.classList.add("is-square");
+    }
+}
+
+function loadDeferredImage(image, frame) {
+    const src = image.dataset.src;
+    const progress = frame.querySelector("[data-image-progress]");
+    if (!src || image.dataset.loaded === "true") return;
+
+    const request = new XMLHttpRequest();
+    request.open("GET", src, true);
+    request.responseType = "blob";
+    request.onprogress = (event) => {
+        if (!progress) return;
+        if (event.lengthComputable && event.total > 0) {
+            const percent = Math.max(1, Math.min(100, Math.round((event.loaded / event.total) * 100)));
+            progress.textContent = `${percent}%`;
+        } else {
+            progress.textContent = "Loading";
+        }
+    };
+    request.onload = () => {
+        if (request.status < 200 || request.status >= 300) {
+            if (progress) progress.textContent = "Error";
+            return;
+        }
+        const objectUrl = URL.createObjectURL(request.response);
+        image.onload = () => {
+            image.dataset.loaded = "true";
+            applyOrientationClass(image, frame);
+            frame.classList.remove("image-loading");
+            if (progress) progress.remove();
+        };
+        image.src = objectUrl;
+    };
+    request.onerror = () => {
+        if (progress) progress.textContent = "Error";
+    };
+    request.send();
+}
+
+function initDeferredImages(scope = document) {
+    const images = Array.from(scope.querySelectorAll(".deferred-image"));
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            const image = entry.target;
+            const frame = image.closest("[data-image-frame]");
+            if (frame) loadDeferredImage(image, frame);
+            observer.unobserve(image);
+        });
+    }, { rootMargin: "180px" });
+
+    images.forEach((image) => observer.observe(image));
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     initUploadPage();
     initFilterSearch();
     initFilterActions();
     initProcessPage();
     initCopyLinkButtons();
+    initDeferredImages();
 });

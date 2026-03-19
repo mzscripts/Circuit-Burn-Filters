@@ -6,55 +6,45 @@
     <div>
         <p class="eyebrow">Results gallery</p>
         <h1>Your generated images</h1>
-        <p class="hero-text">Compare the original with every generated output from the current session.</p>
+        <p class="hero-text">Browse every generated output from the current session.</p>
     </div>
     <div class="workspace-actions">
         <a class="ghost-button" href="{{ url_for('filters_page') }}">Apply More Filters</a>
     </div>
 </section>
 
-<section class="gallery-layout">
-    <aside class="original-panel">
-        <h2>Original</h2>
-        <div class="source-card">
-            <img src="{{ uploaded_image.display_url }}" alt="Original uploaded image">
-            <div class="source-meta">
-                <strong>{{ uploaded_image.original_name }}</strong>
-                <span>Base image hosted on ImgBB</span>
+<section class="results-gallery solo-gallery">
+    <div class="section-head">
+        <h2>Generated</h2>
+        <span>{{ generated_results|length }} outputs</span>
+    </div>
+
+    {% if generated_results %}
+    <div class="results-gallery-grid">
+        {% for result in generated_results %}
+        <article class="gallery-card dynamic-image-card">
+            <div class="image-frame image-loading" data-image-frame>
+                <div class="image-progress" data-image-progress>0%</div>
+                <img class="deferred-image" data-src="{{ result.image_url }}" alt="{{ result.filter_name }}">
             </div>
-        </div>
-    </aside>
-
-    <section class="results-gallery">
-        <div class="section-head">
-            <h2>Generated</h2>
-            <span>{{ generated_results|length }} outputs</span>
-        </div>
-
-        {% if generated_results %}
-        <div class="results-gallery-grid">
-            {% for result in generated_results %}
-            <article class="gallery-card">
-                <img src="{{ result.image_url }}" alt="{{ result.filter_name }}">
-                <div class="gallery-copy compact-meta">
-                    <strong>{{ result.filter_name }}</strong>
-                    <span>{{ result.file_size_label }}</span>
-                    <span>{{ result.generation_time_label }}</span>
-                    <div class="result-actions">
-                        <a class="ghost-button small" href="{{ result.image_url }}" download>Download</a>
-                        <button class="ghost-button small copy-link-button" type="button" data-copy-link="{{ result.image_url }}">Copy Link</button>
-                    </div>
+            <div class="gallery-copy compact-meta">
+                <strong>{{ result.filter_name }}</strong>
+                <span>{{ result.file_size_label }}</span>
+                <span>{{ result.generation_time_label }}</span>
+                <div class="result-actions">
+                    <a class="ghost-button small" href="{{ url_for('download_result', filter_id=result.filter_id) }}">Download</a>
+                    <button class="ghost-button small copy-link-button" type="button" data-copy-link="{{ result.image_url }}">Copy Link</button>
                 </div>
-            </article>
-            {% endfor %}
-        </div>
-        {% else %}
-        <div class="empty-state">
-            <h3>No outputs yet</h3>
-            <p>Head back to the filter browser to generate your first look.</p>
-            <a class="primary-button" href="{{ url_for('filters_page') }}">Choose Filters</a>
-        </div>
-        {% endif %}
-    </section>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <h3>No outputs yet</h3>
+        <p>Head back to the filter browser to generate your first look.</p>
+        <a class="primary-button" href="{{ url_for('filters_page') }}">Choose Filters</a>
+    </div>
+    {% endif %}
 </section>
 {% endblock %}

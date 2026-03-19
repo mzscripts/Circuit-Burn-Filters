@@ -38,7 +38,8 @@ REGISTRY: dict[str, FilterMetadata] = {}
 
 
 def _humanize_filter_name(filter_id: str) -> str:
-    return filter_id.replace("_", " ").replace("-", " ").title()
+    cleaned = re.sub(r"^\d+[_-]?", "", filter_id)
+    return cleaned.replace("_", " ").replace("-", " ").title()
 
 
 def _normalize_category(filter_id: str, name: str) -> str:
@@ -164,7 +165,10 @@ def _load_existing_script_filters() -> None:
     ]
 
     for module_name, attribute_name, thumb_pack_key in pack_specs:
-        module = importlib.import_module(module_name)
+        try:
+            module = importlib.import_module(module_name)
+        except ModuleNotFoundError:
+            continue
         mapping = getattr(module, attribute_name)
         for filter_id, function in mapping.items():
             if filter_id in REGISTRY:
