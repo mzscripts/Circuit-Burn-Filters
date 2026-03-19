@@ -321,24 +321,6 @@ def church_magenta(src):
     result = out*0.65 + hue_boost*0.35
     return sat(im(np.clip(result,0,255)), 3.0)
 
-# -- 14. gold_leaf_forest ------------------------------------------------------
-# Ref img 17: dark forest/landscape — gold/ochre on black, painterly, metallic
-def gold_leaf_forest(src):
-    arr = a(src)
-    x = lum(arr)/255.0
-    # gold on black
-    r = np.clip(x**0.5*240+10, 0,255)
-    g = np.clip(x**0.7*180,    0,255)
-    b = np.clip(x**2.5*30,     0,255)
-    gold = np.stack([r,g,b],axis=2)
-    # painterly: unsharp mask edges to look brushed
-    usm = np.asarray(src.convert("RGB").filter(ImageFilter.UnsharpMask(3,180,4)),dtype=np.float32)
-    usm_lum = (lum(usm)/255.0)[:,:,np.newaxis]
-    gold2 = gold*(usm_lum+0.2)
-    # dark base
-    dark = arr*0.1
-    return sat(im(np.clip(dark+gold2,0,255)), 2.2)
-
 # -- 15. neon_petals -----------------------------------------------------------
 # Ref img 19 (bottom row last): flowers/plants — electric cyan, vivid green,
 # high key with dark bg
@@ -677,7 +659,6 @@ FILTERS = {
     "11_double_exposure_face":      double_exposure_face,
     "12_acid_flesh_pink":           acid_flesh_pink,
     "13_church_magenta":            church_magenta,
-    "14_gold_leaf_forest":          gold_leaf_forest,
     "15_neon_petals":               neon_petals,
     "16_red_static_wall":           red_static_wall,
     "17_hue_shift_cascade":         hue_shift_cascade,

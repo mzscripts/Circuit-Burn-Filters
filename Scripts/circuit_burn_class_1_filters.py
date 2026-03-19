@@ -172,13 +172,6 @@ def build_registry() -> dict[str, Callable[[Image.Image], Image.Image]]:
             ],
         ),
         (
-            "nostalgia",
-            "nostalgia.py",
-            [
-                "ghost_in_the_lcd",
-            ],
-        ),
-        (
             "pixless",
             "pixless.py",
             [

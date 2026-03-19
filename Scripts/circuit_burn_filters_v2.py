@@ -1,5 +1,5 @@
 """
-circuit_burn_filters_v2.py  -  30 experimental colour filters
+circuit_burn_filters_v2.py  -  26 experimental colour filters
 ==================================================================
 Drop images into  'wallter/'  next to this script.
 Every filtered image is saved flat into  'circuitburn/'
@@ -109,17 +109,7 @@ def oxidised_silver(src):
     silver[:,:,0] = np.clip(silver[:,:,0]-ox*20, 0,255)
     return con(i(silver),1.6)
 
-# ---- 05 tungsten_filament -----------------------------------------------------
-def tungsten_filament(src):
-    x = lum(a(src))/255.0
-    r = np.clip(x**0.5*255*1.3,  0,255)
-    g = np.clip(x**1.5*255*0.6,  0,255)
-    b = np.clip(x**3.0*255*0.2,  0,255)
-    hot = np.clip((x-0.85)*7,0,1)[:,:,np.newaxis]
-    out = np.stack([r,g,b],axis=2)*(1-hot)+255*hot
-    return i(out)
-
-# ---- 06 absinthe_drip ---------------------------------------------------------
+# ---- 05 absinthe_drip ---------------------------------------------------------
 def absinthe_drip(src):
     arr = a(src); h,w = arr.shape[:2]
     xv,yv = mesh(h,w)
@@ -132,7 +122,7 @@ def absinthe_drip(src):
     b = np.clip(warped[:,:,2]*0.3+warped[:,:,0]*0.2+20,  0,255)
     return sat(i(np.stack([r,g,b],axis=2)),2.6)
 
-# ---- 07 ghost_frequency -------------------------------------------------------
+# ---- 06 ghost_frequency -------------------------------------------------------
 def ghost_frequency(src):
     arr = a(src)
     g1 = np.roll(arr, 20,axis=1); g2 = np.roll(arr,-20,axis=0)
@@ -141,7 +131,7 @@ def ghost_frequency(src):
     b = np.clip(g2[:,:,2]*1.2+30,                0,255)
     return sat(i(arr*0.3+np.stack([r,g,b],axis=2)*0.7),2.0)
 
-# ---- 08 magma_crust -----------------------------------------------------------
+# ---- 07 magma_crust -----------------------------------------------------------
 def magma_crust(src):
     x = lum(a(src))/255.0
     crack = np.clip((x-0.4)*3,0,1)
@@ -152,7 +142,7 @@ def magma_crust(src):
     out = np.stack([r,g,b],axis=2)*(1-hot)+255*hot
     return i(out)
 
-# ---- 09 cerebral_cortex -------------------------------------------------------
+# ---- 08 cerebral_cortex -------------------------------------------------------
 def cerebral_cortex(src):
     arr = a(src)
     bl = np.asarray(src.convert("RGB").filter(ImageFilter.GaussianBlur(4)),dtype=np.float32)
@@ -163,7 +153,7 @@ def cerebral_cortex(src):
     b = np.clip(x**0.5*255,     0,255)
     return sat(i(np.stack([r,g,b],axis=2)),1.4)
 
-# ---- 10 retinal_burn ----------------------------------------------------------
+# ---- 09 retinal_burn ----------------------------------------------------------
 def retinal_burn(src):
     arr = a(src); L = lum(arr)
     comp  = 255-arr
@@ -171,17 +161,7 @@ def retinal_burn(src):
     bloom_a = np.asarray(bloom_i.filter(ImageFilter.GaussianBlur(16)),dtype=np.float32)
     return sat(i(np.clip(arr*0.5+bloom_a*1.2,0,255)),2.5)
 
-# ---- 11 sulfur_springs --------------------------------------------------------
-def sulfur_springs(src):
-    x = lum(a(src))/255.0
-    r = np.clip(x**0.6*255*1.1+20,  0,255)
-    g = np.clip(x**0.7*255*0.95,    0,255)
-    b = np.clip(x**2.0*255*0.25,    0,255)
-    hi = np.clip((x-0.7)*3,0,1)[:,:,np.newaxis]
-    out = np.stack([r,g,b],axis=2)*(1-hi*0.5)+np.array([255,252,230])*hi*0.5
-    return i(out)
-
-# ---- 12 neon_autopsy ----------------------------------------------------------
+# ---- 10 neon_autopsy ----------------------------------------------------------
 def neon_autopsy(src):
     arr = a(src); L = lum(arr)
     base = np.stack([L*0.15,L*0.9,L*0.7],axis=2)
@@ -191,7 +171,7 @@ def neon_autopsy(src):
     base[:,:,2] = np.clip(base[:,:,2]+anom*100,0,255)
     return sat(i(base),2.3)
 
-# ---- 13 prism_shatter ---------------------------------------------------------
+# ---- 11 prism_shatter ---------------------------------------------------------
 def prism_shatter(src):
     arr = a(src)
     offsets  = [(-12,0),(-6,0),(0,0),(6,0),(12,0)]
@@ -202,7 +182,7 @@ def prism_shatter(src):
         out += s*np.array([sr,sg,sb],dtype=np.float32)/255.0
     return sat(i(np.clip(out/len(offsets)*2.5,0,255)),3.0)
 
-# ---- 14 ferrofluid ------------------------------------------------------------
+# ---- 12 ferrofluid ------------------------------------------------------------
 def ferrofluid(src):
     arr = a(src)
     spikes = np.asarray(src.convert("L").filter(ImageFilter.EMBOSS),dtype=np.float32)
@@ -211,7 +191,7 @@ def ferrofluid(src):
     silver = np.stack([spikes*0.9,spikes*0.95,spikes],axis=2)
     return i(np.clip(dark+silver,0,255))
 
-# ---- 15 dichroic_glass --------------------------------------------------------
+# ---- 13 dichroic_glass --------------------------------------------------------
 def dichroic_glass(src):
     arr = a(src); h,w = arr.shape[:2]
     xv,yv = mesh(h,w)
@@ -222,7 +202,7 @@ def dichroic_glass(src):
         (np.sin(angle*2+4.19)*0.5+0.5)],axis=2)*255
     return sat(i(np.clip(arr*0.2+arr*dich/255.0*0.8,0,255)),3.5)
 
-# ---- 16 strontium_fire --------------------------------------------------------
+# ---- 14 strontium_fire --------------------------------------------------------
 def strontium_fire(src):
     x = lum(a(src))/255.0
     r = np.clip(x**0.3*255,      0,255)
@@ -232,7 +212,7 @@ def strontium_fire(src):
     out = np.stack([r,g,b],axis=2)*(1-hot)+255*hot
     return i(out)
 
-# ---- 17 quantum_foam ----------------------------------------------------------
+# ---- 15 quantum_foam ----------------------------------------------------------
 def quantum_foam(src):
     arr = a(src); h,w = arr.shape[:2]
     rng = np.random.default_rng(99)
@@ -245,7 +225,7 @@ def quantum_foam(src):
         np.clip(arr[:,:,2]+n2*0.8,0,255)],axis=2)
     return sat(i(foam),2.0)
 
-# ---- 18 cassette_dub ----------------------------------------------------------
+# ---- 16 cassette_dub ----------------------------------------------------------
 def cassette_dub(src):
     arr = a(src); h,w = arr.shape[:2]
     wobble = (np.sin(np.arange(h)*0.08)*6).astype(int)
@@ -257,7 +237,7 @@ def cassette_dub(src):
     b = np.clip(warped[:,:,2]*1.0+20,0,255)
     return con(bri(i(np.stack([r,g,b],axis=2)),0.85),0.75)
 
-# ---- 19 nerve_signal ----------------------------------------------------------
+# ---- 17 nerve_signal ----------------------------------------------------------
 def nerve_signal(src):
     arr = a(src)
     gray = lum(arr)
@@ -269,7 +249,7 @@ def nerve_signal(src):
     myelin = np.asarray(myelin_i.filter(ImageFilter.GaussianBlur(8)),dtype=np.float32)
     return i(np.clip(dark+dendrite+myelin,0,255))
 
-# ---- 20 solar_wind ------------------------------------------------------------
+# ---- 18 solar_wind ------------------------------------------------------------
 def solar_wind(src):
     arr = a(src); h,w = arr.shape[:2]
     xv,yv = mesh(h,w)
@@ -281,18 +261,7 @@ def solar_wind(src):
     b = np.clip(x*80 +s2*140+20, 0,255)
     return sat(i(np.stack([r,g,b],axis=2)),2.1)
 
-# ---- 21 crt_phosphor ----------------------------------------------------------
-def crt_phosphor(src):
-    arr = a(src); h,w = arr.shape[:2]
-    x   = lum(arr)/255.0
-    dm  = np.ones((h,w),dtype=np.float32)
-    dm[::2,:] *= 0.45; dm[:,::3] *= 0.7
-    glow_lum = x*dm
-    g_i = i(np.stack([np.zeros((h,w)),glow_lum*255,glow_lum*80],axis=2))
-    g_b = np.asarray(g_i.filter(ImageFilter.GaussianBlur(2)),dtype=np.float32)*1.3
-    return i(np.clip(g_b,0,255))
-
-# ---- 22 tritium_glow ----------------------------------------------------------
+# ---- 19 tritium_glow ----------------------------------------------------------
 def tritium_glow(src):
     arr = a(src)
     x = lum(arr) / 255.0
@@ -315,7 +284,7 @@ def tritium_glow(src):
 
     out = np.clip(base + bloom, 0, 255)
     return i(out)
-# ---- 23 rust_bloom ------------------------------------------------------------
+# ---- 20 rust_bloom ------------------------------------------------------------
 def rust_bloom(src):
     arr = a(src); x = lum(arr)/255.0
     steel = np.stack([x*180,x*175,x*170],axis=2)
@@ -324,15 +293,7 @@ def rust_bloom(src):
     alpha = (rs*1.5).clip(0,1)[:,:,np.newaxis]
     return con(i(steel*(1-alpha)+rust*alpha),1.5)
 
-# ---- 24 sodium_vapor ----------------------------------------------------------
-def sodium_vapor(src):
-    x = lum(a(src))/255.0
-    r = np.clip(x**0.6*255*1.05+15,0,255)
-    g = np.clip(x**0.8*255*0.70,    0,255)
-    b = np.clip(x**2.5*255*0.05,    0,255)
-    return i(np.stack([r,g,b],axis=2))
-
-# ---- 25 corrupted_memory -------------------------------------------------------
+# ---- 21 corrupted_memory -------------------------------------------------------
 def corrupted_memory(src):
     arr = a(src); h,w = arr.shape[:2]
     rng = np.random.default_rng(31); out = arr.copy(); bs=16
@@ -348,14 +309,14 @@ def corrupted_memory(src):
                 out[by:by+bs,bx:bx+bs]=arr[sy:sy+bs,sx:sx+bs]
     return sat(i(out),1.8)
 
-# ---- 26 teal_orange_split -----------------------------------------------------
+# ---- 22 teal_orange_split -----------------------------------------------------
 def teal_orange_split(src):
     arr = a(src)
     t = (lum(arr)/255.0)[:,:,np.newaxis]
     out = np.array([0,180,180])*(1-t)+np.array([255,130,0])*t
     return sat(i(np.clip(arr*0.25+out*0.75,0,255)),2.5)
 
-# ---- 27 hypnodisk -------------------------------------------------------------
+# ---- 23 hypnodisk -------------------------------------------------------------
 def hypnodisk(src):
     arr = a(src); h,w = arr.shape[:2]
     cy,cx = h/2,w/2
@@ -369,7 +330,7 @@ def hypnodisk(src):
     b = (np.sin(hue*2*math.pi+4.19)*0.5+0.5)*x*255*1.5
     return sat(i(np.clip(np.stack([r,g,b],axis=2),0,255)),2.4)
 
-# ---- 28 dna_sequencer ---------------------------------------------------------
+# ---- 24 dna_sequencer ---------------------------------------------------------
 def dna_sequencer(src):
     arr = a(src); h,w = arr.shape[:2]
     bw   = max(1,w//4)
@@ -383,7 +344,7 @@ def dna_sequencer(src):
     bloom = np.asarray(i(out).filter(ImageFilter.GaussianBlur(6)),dtype=np.float32)*0.4
     return i(np.clip(out+bloom,0,255))
 
-# ---- 29 acid_rain -------------------------------------------------------------
+# ---- 25 acid_rain -------------------------------------------------------------
 def acid_rain(src):
     arr = a(src); h,w = arr.shape[:2]
     rng = np.random.default_rng(88)
@@ -397,7 +358,7 @@ def acid_rain(src):
     b = np.clip(arr[:,:,2]*0.2+streaks*30, 0,255)
     return sat(i(np.stack([r,g,b],axis=2)),2.2)
 
-# ---- 30 carnival_mirror -------------------------------------------------------
+# ---- 26 carnival_mirror -------------------------------------------------------
 def carnival_mirror(src):
     arr = a(src); h,w = arr.shape[:2]
     cy,cx = h/2.0,w/2.0
@@ -414,32 +375,28 @@ FILTERS = {
     "02_void_static":           void_static,
     "03_gamma_burst":           gamma_burst,
     "04_oxidised_silver":       oxidised_silver,
-    "05_tungsten_filament":     tungsten_filament,
-    "06_absinthe_drip":         absinthe_drip,
-    "07_ghost_frequency":       ghost_frequency,
-    "08_magma_crust":           magma_crust,
-    "09_cerebral_cortex":       cerebral_cortex,
-    "10_retinal_burn":          retinal_burn,
-    "11_sulfur_springs":        sulfur_springs,
-    "12_neon_autopsy":          neon_autopsy,
-    "13_prism_shatter":         prism_shatter,
-    "14_ferrofluid":            ferrofluid,
-    "15_dichroic_glass":        dichroic_glass,
-    "16_strontium_fire":        strontium_fire,
-    "17_quantum_foam":          quantum_foam,
-    "18_cassette_dub":          cassette_dub,
-    "19_nerve_signal":          nerve_signal,
-    "20_solar_wind":            solar_wind,
-    "21_crt_phosphor":          crt_phosphor,
-    "22_tritium_glow":          tritium_glow,
-    "23_rust_bloom":            rust_bloom,
-    "24_sodium_vapor":          sodium_vapor,
-    "25_corrupted_memory":      corrupted_memory,
-    "26_teal_orange_split":     teal_orange_split,
-    "27_hypnodisk":             hypnodisk,
-    "28_dna_sequencer":         dna_sequencer,
-    "29_acid_rain":             acid_rain,
-    "30_carnival_mirror":       carnival_mirror,
+    "05_absinthe_drip":         absinthe_drip,
+    "06_ghost_frequency":       ghost_frequency,
+    "07_magma_crust":           magma_crust,
+    "08_cerebral_cortex":       cerebral_cortex,
+    "09_retinal_burn":          retinal_burn,
+    "10_neon_autopsy":          neon_autopsy,
+    "11_prism_shatter":         prism_shatter,
+    "12_ferrofluid":            ferrofluid,
+    "13_dichroic_glass":        dichroic_glass,
+    "14_strontium_fire":        strontium_fire,
+    "15_quantum_foam":          quantum_foam,
+    "16_cassette_dub":          cassette_dub,
+    "17_nerve_signal":          nerve_signal,
+    "18_solar_wind":            solar_wind,
+    "19_tritium_glow":          tritium_glow,
+    "20_rust_bloom":            rust_bloom,
+    "21_corrupted_memory":      corrupted_memory,
+    "22_teal_orange_split":     teal_orange_split,
+    "23_hypnodisk":             hypnodisk,
+    "24_dna_sequencer":         dna_sequencer,
+    "25_acid_rain":             acid_rain,
+    "26_carnival_mirror":       carnival_mirror,
 }
 
 def main():

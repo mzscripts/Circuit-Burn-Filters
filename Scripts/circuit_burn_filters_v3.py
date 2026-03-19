@@ -514,23 +514,6 @@ def neon_sashimi(src):
         out = out*(1-mask) + seam_blur*mask
     return sat(im(np.clip(out,0,255)), 2.4)
 
-# ── 15. electron_microscope ───────────────────────────────────────────────────
-def electron_microscope(src):
-    """SEM false-colour: metallic gold-green on pitch black substrate."""
-    arr = a(src)
-    # scanning electron look: heavy edge emphasis, nearly black base
-    e = edg(src)/255.0
-    x = lum(arr)/255.0
-    # topography from unsharp-mask
-    sharp_arr = np.asarray(src.convert("RGB").filter(ImageFilter.UnsharpMask(2,150,3)), dtype=np.float32)
-    topo = lum(sharp_arr)/255.0
-    r = np.clip(topo**0.5*200 + e*100, 0, 255)
-    g = np.clip(topo**0.6*230 + e*60,  0, 255)
-    b = np.clip(topo**2.0*60,           0, 255)
-    dark_mask = (1 - topo**0.4)[:,:,np.newaxis]
-    out = np.stack([r,g,b],axis=2) * (1-dark_mask*0.85)
-    return im(np.clip(out, 0, 255))
-
 # ── 16. color_channel_tornado ─────────────────────────────────────────────────
 def color_channel_tornado(src):
     """Each colour channel rotated by a different angle around image centre."""
@@ -869,7 +852,6 @@ FILTERS = {
     "12_lenticular_shift":      lenticular_shift,
     "13_neutrino_scan":         neutrino_scan,
     "14_neon_sashimi":          neon_sashimi,
-    "15_electron_microscope":   electron_microscope,
     "16_color_channel_tornado": color_channel_tornado,
     "17_short_circuit":         short_circuit,
     "18_pollen_cloud":          pollen_cloud,
